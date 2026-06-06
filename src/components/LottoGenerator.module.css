@@ -1,0 +1,115 @@
+.container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px dashed var(--color-gold-dark);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.title {
+  color: var(--color-gold);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sparkleIcon {
+  color: var(--color-gold);
+}
+
+.numberDisplay {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.ball {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: #444;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 로또 번호대별 색상 (전통적인 느낌을 가미한 톤다운된 색상) */
+.ball[data-color="0"] { background: #d4af37; color: #1a1a1a; } /* 1-10: 금색 */
+.ball[data-color="1"] { background: #4a90e2; } /* 11-20: 청색 */
+.ball[data-color="2"] { background: #8b0000; } /* 21-30: 홍색 */
+.ball[data-color="3"] { background: #555555; } /* 31-40: 회색 */
+.ball[data-color="4"] { background: #228b22; } /* 41-45: 녹색 */
+
+.spinning {
+  opacity: 0.5;
+  filter: blur(1px);
+}
+
+.refreshButton {
+  background: none;
+  border: 1px solid var(--color-gold-dark);
+  color: var(--color-gold-dark);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: var(--color-gold-dark);
+  color: white;
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinIcon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+.disclaimer {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #777;
+}
+
+@media (max-width: 400px) {
+  .ball {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+  .numberDisplay {
+    gap: 0.5rem;
+  }
+}

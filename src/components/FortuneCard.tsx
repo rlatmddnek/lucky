@@ -1,6 +1,7 @@
 import type { FortuneData } from '../data/fortunes';
 import styles from './FortuneCard.module.css';
 import { Palette, Hash, Compass, Quote } from 'lucide-react';
+import LottoGenerator from './LottoGenerator';
 
 interface FortuneCardProps {
   fortune: FortuneData | null;
@@ -45,6 +46,8 @@ const FortuneCard = ({ fortune }: FortuneCardProps) => {
             <span className={styles.elementValue}>{fortune.luckyDirection}</span>
           </div>
         </div>
+
+        <LottoGenerator seedId={fortune.id} />
 
         <div className={styles.bottomPattern}></div>
       </div>
