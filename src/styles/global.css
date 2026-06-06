@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap');
+
+:root {
+  --color-gold: #d4af37;
+  --color-gold-dark: #aa841e;
+  --color-crimson: #8b0000;
+  --color-ink-black: #1a1a1a;
+  --color-paper: #f9f4e8;
+  --color-text: #333333;
+  --font-main: 'Noto Serif KR', serif;
+  --shadow-traditional: 0 4px 15px rgba(0, 0, 0, 0.2);
+  --border-traditional: 2px solid var(--color-gold);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-ink-black);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  background-image: radial-gradient(circle at center, #2a2a2a 0%, #1a1a1a 100%);
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+ul {
+  list-style: none;
+}

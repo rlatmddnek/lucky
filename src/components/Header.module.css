@@ -1,0 +1,44 @@
+.header {
+  padding: 3rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.title {
+  color: var(--color-gold);
+  font-size: 3rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.2rem;
+}
+
+.subtitle {
+  color: #ccc;
+  font-size: 1.1rem;
+}
+
+.ornament {
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  position: relative;
+}
+
+.ornament::before, .ornament::after {
+  content: '✧';
+  color: var(--color-gold);
+  position: absolute;
+  top: -10px;
+}
+
+.ornament::before { left: 45%; }
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2rem;
+  }
+}

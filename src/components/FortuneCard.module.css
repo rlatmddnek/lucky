@@ -1,0 +1,126 @@
+.cardWrapper {
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem 1rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  background-color: var(--color-paper);
+  border: 4px double var(--color-gold);
+  padding: 3rem 2rem;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: var(--color-ink-black);
+  text-align: center;
+}
+
+.topPattern, .bottomPattern {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-image: radial-gradient(var(--color-gold) 2px, transparent 2px);
+  background-size: 15px 15px;
+  opacity: 0.3;
+}
+
+.topPattern { top: 10px; }
+.bottomPattern { bottom: 10px; }
+
+.header {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hanja {
+  font-size: 3rem;
+  color: var(--color-crimson);
+  border: 2px solid var(--color-crimson);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.name {
+  font-size: 1.8rem;
+  color: var(--color-ink-black);
+  border-bottom: 1px solid var(--color-gold-dark);
+  padding-bottom: 0.5rem;
+}
+
+.mainFortune {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  padding: 0 1rem;
+  font-weight: 500;
+}
+
+.advice {
+  background: rgba(212, 175, 55, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  text-align: left;
+}
+
+.icon {
+  color: var(--color-crimson);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.luckyElements {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.elementIcon {
+  color: var(--color-gold-dark);
+}
+
+.elementLabel {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.elementValue {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-crimson);
+}
+
+@media (max-width: 500px) {
+  .luckyElements {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .card {
+    padding: 2rem 1rem;
+  }
+}
