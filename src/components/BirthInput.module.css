@@ -1,0 +1,92 @@
+.container {
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  margin-bottom: 2rem;
+}
+
+.title {
+  color: var(--color-gold);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.icon {
+  color: var(--color-gold);
+}
+
+.dateInputs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.yearInput {
+  flex: 2;
+  background: var(--color-ink-black);
+  border: 1px solid #444;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 4px;
+}
+
+.select, .fullSelect {
+  flex: 1;
+  background: var(--color-ink-black);
+  border: 1px solid #444;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fullSelect {
+  flex: none;
+  width: 100%;
+}
+
+.submitButton {
+  background: var(--color-crimson);
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold);
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submitButton:hover {
+  background: var(--color-gold);
+  color: var(--color-crimson);
+}
+
+@media (max-width: 480px) {
+  .dateInputs {
+    flex-direction: column;
+  }
+}
