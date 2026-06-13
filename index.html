@@ -935,10 +935,16 @@
 
             const emojis = [
                 { emoji: '😊', label: '행복' },
+                { emoji: '🤩', label: '신남' },
+                { emoji: '🥳', label: '축하' },
                 { emoji: '😎', label: '자신감' },
-                { emoji: '😴', label: '피곤' },
+                { emoji: '😇', label: '평온' },
                 { emoji: '🤔', label: '고민' },
+                { emoji: '😴', label: '피곤' },
+                { emoji: '😤', label: '의욕' },
                 { emoji: '😢', label: '슬픔' },
+                { emoji: '😭', label: '우울' },
+                { emoji: '🤒', label: '아픔' },
                 { emoji: '🔥', label: '열정' }
             ];
 
@@ -948,22 +954,42 @@
                     'Rain': { food: '벨기에 와플', reason: '비 오는 날의 행복을 달콤하게 채워보세요.' },
                     'default': { food: '마카롱', reason: '기분 좋은 하루를 더 상큼하게 만들어줄 거예요.' }
                 },
+                '🤩': {
+                    'Clear': { food: '패밀리 레스토랑', reason: '신나는 기분 그대로! 다양한 맛이 있는 뷔페나 레스토랑 어때요?' },
+                    'default': { food: '피자', reason: '기분 좋은 에너지를 한 입 가득 채워보세요!' }
+                },
+                '🥳': {
+                    'default': { food: '치킨', reason: '특별한 날, 축하 파티엔 역시 치킨이 빠질 수 없죠!' }
+                },
                 '😎': {
                     'Clear': { food: '루프탑 바', reason: '자신감 넘치는 날, 멋진 전망과 함께 분위기를 즐겨보세요.' },
                     'default': { food: '수제버거', reason: '특별한 나를 위한 든든하고 멋진 한 끼!' }
                 },
-                '😴': {
-                    'default': { food: '에스프레소 카페', reason: '피곤할 땐 진한 커피 한 잔으로 에너지를 충전하세요.' },
-                    'Clear': { food: '브런치 빈', reason: '맑은 공기와 가벼운 브런치로 생기를 되찾으세요.' }
+                '😇': {
+                    'default': { food: '찻집', reason: '평온한 마음을 더 깊게 해줄 따뜻한 차 한 잔 어떨까요?' },
+                    'Clear': { food: '사찰 음식', reason: '정갈한 음식으로 몸과 마음의 평화를 더해보세요.' }
                 },
                 '🤔': {
                     'default': { food: '초밥', reason: '깔끔한 초밥과 함께 생각을 정리해보는 건 어떨까요?' },
                     'Rain': { food: '베트남 쌀국수', reason: '따뜻한 국물과 함께 복잡한 마음을 차분히 가라앉히세요.' }
                 },
+                '😴': {
+                    'default': { food: '에스프레소 카페', reason: '피곤할 땐 진한 커피 한 잔으로 에너지를 충전하세요.' },
+                    'Clear': { food: '브런치 빈', reason: '맑은 공기와 가벼운 브런치로 생기를 되찾으세요.' }
+                },
+                '😤': {
+                    'default': { food: '매운 갈비찜', reason: '의욕 충만한 날, 화끈한 매운맛으로 에너지를 발산해보세요!' }
+                },
                 '😢': {
                     'Rain': { food: '해물파전', reason: '비 오는 날의 우울함을 고소한 파전이 달래줄 거예요.' },
                     'Clear': { food: '젤라또', reason: '맑은 하늘 아래 달콤한 아이스크림으로 기운을 내보세요.' },
                     'default': { food: '매운 떡볶이', reason: '화끈한 매운맛으로 슬픔을 날려버리세요!' }
+                },
+                '😭': {
+                    'default': { food: '삼겹살', reason: '기운 없을 땐 고기 앞으로! 든든한 삼겹살로 위로받으세요.' }
+                },
+                '🤒': {
+                    'default': { food: '본죽', reason: '몸이 안 좋을 땐 따뜻하고 소화 잘 되는 죽이 최고입니다.' }
                 },
                 '🔥': {
                     'Clear': { food: '스테이크 하우스', reason: '불타는 열정엔 그에 걸맞는 고기 요리가 제격입니다.' },
@@ -1134,7 +1160,7 @@
                         </div>
                     </nav>
 
-                    <Header />
+                    {currentPage === 'fortune' && <Header />}
 
                     <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '5rem' }}>
                         {currentPage === 'fortune' ? (
