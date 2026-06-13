@@ -326,7 +326,19 @@
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
-        const { Calendar, Clock, Palette, Hash, Compass, Quote, Sparkles, RefreshCw } = LucideReact;
+        
+        // Handle Lucide Icons Global Naming
+        const LucideIcons = window.LucideReact || window.lucide || {};
+        const { 
+            Calendar = () => null, 
+            Clock = () => null, 
+            Palette = () => null, 
+            Hash = () => null, 
+            Compass = () => null, 
+            Quote = () => null, 
+            Sparkles = () => null, 
+            RefreshCw = () => null 
+        } = LucideIcons;
 
         // --- Data ---
         const zodiacData = [
