@@ -1079,7 +1079,7 @@
                                 <div className="recommend-food">{recommendation.food}</div>
                                 <div className="recommend-reason">{recommendation.reason}</div>
                                 <a 
-                                    href={`https://map.naver.com/v5/search/${encodeURIComponent(weather.city + ' ' + recommendation.food)}`} 
+                                    href={`https://map.naver.com/v5/search/${encodeURIComponent(recommendation.food)}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="store-search-btn"
