@@ -376,6 +376,123 @@
         .spinning { animation: spin 0.8s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
+        /* Navigation Styles */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            z-index: 1000;
+        }
+        .nav-item {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: var(--color-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* MoodTracker Styles */
+        .mood-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .mood-title {
+            color: var(--color-gold);
+            margin-bottom: 1.5rem;
+        }
+        .mood-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .mood-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid transparent;
+            font-size: 2rem;
+            padding: 1rem;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .mood-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .mood-btn.selected {
+            border-color: var(--color-gold);
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .mood-note-area {
+            width: 100%;
+            background: var(--color-ink-black);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+            color: white;
+            font-family: inherit;
+            resize: none;
+            margin-bottom: 1rem;
+            min-height: 120px;
+        }
+        .save-mood-btn {
+            background: var(--color-gold);
+            color: var(--color-ink-black);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .save-mood-btn:hover {
+            background: var(--color-gold-dark);
+        }
+        .mood-history {
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 600px;
+            text-align: left;
+        }
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .history-emoji { font-size: 1.5rem; }
+        .history-content { flex: 1; }
+        .history-date { font-size: 0.8rem; color: #888; }
+        .history-note { font-size: 0.95rem; color: #ccc; margin-top: 0.2rem; }
+
         @media (max-width: 600px) {
             .zodiac-grid { grid-template-columns: repeat(3, 1fr); }
             .lucky-elements { grid-template-columns: 1fr; }
@@ -724,7 +841,82 @@
             );
         };
 
+        const MoodTracker = () => {
+            const [moods, setMoods] = useState(() => JSON.parse(localStorage.getItem('moodHistory') || '[]'));
+            const [selectedEmoji, setSelectedEmoji] = useState(null);
+            const [note, setNote] = useState('');
+
+            const emojis = [
+                { emoji: '😊', label: '행복' },
+                { emoji: '😎', label: '자신감' },
+                { emoji: '😴', label: '피곤' },
+                { emoji: '🤔', label: '고민' },
+                { emoji: '😢', label: '슬픔' },
+                { emoji: '🔥', label: '열정' }
+            ];
+
+            const saveMood = () => {
+                if (!selectedEmoji) return alert('기분을 선택해주세요!');
+                const newMood = {
+                    emoji: selectedEmoji,
+                    note: note,
+                    date: new Date().toLocaleString('ko-KR')
+                };
+                const updatedHistory = [newMood, ...moods];
+                setMoods(updatedHistory);
+                localStorage.setItem('moodHistory', JSON.stringify(updatedHistory));
+                setSelectedEmoji(null);
+                setNote('');
+                alert('오늘의 기분이 저장되었습니다!');
+            };
+
+            return (
+                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div className="mood-container">
+                        <h2 className="mood-title">오늘의 기분은 어떠신가요?</h2>
+                        <div className="mood-selector">
+                            {emojis.map(e => (
+                                <button 
+                                    key={e.label} 
+                                    className={`mood-btn ${selectedEmoji === e.emoji ? 'selected' : ''}`}
+                                    onClick={() => setSelectedEmoji(e.emoji)}
+                                    title={e.label}
+                                >
+                                    {e.emoji}
+                                </button>
+                            ))}
+                        </div>
+                        <textarea 
+                            className="mood-note-area" 
+                            placeholder="오늘의 기분이나 짧은 일기를 적어보세요..." 
+                            value={note}
+                            onChange={e => setNote(e.target.value)}
+                        />
+                        <button className="save-mood-btn" onClick={saveMood}>저장하기</button>
+                    </div>
+
+                    <div className="mood-history">
+                        <h3 style={{ color: 'var(--color-gold)', marginBottom: '1.5rem' }}>나의 기분 기록</h3>
+                        {moods.length === 0 ? (
+                            <p style={{ color: '#888', textAlign: 'center' }}>아직 기록이 없습니다.</p>
+                        ) : (
+                            moods.map((item, i) => (
+                                <div key={i} className="history-item">
+                                    <div className="history-emoji">{item.emoji}</div>
+                                    <div className="history-content">
+                                        <div className="history-date">{item.date}</div>
+                                        {item.note && <div className="history-note">{item.note}</div>}
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
+            const [currentPage, setCurrentPage] = useState('fortune'); // 'fortune' or 'mood'
             const [selectedFortune, setSelectedFortune] = useState(null);
 
             const calculateZodiac = (year) => {
@@ -741,12 +933,35 @@
 
             return (
                 <>
+                    <nav className="nav-bar">
+                        <div 
+                            className={`nav-item ${currentPage === 'fortune' ? 'active' : ''}`} 
+                            onClick={() => setCurrentPage('fortune')}
+                        >
+                            오늘의 운세
+                        </div>
+                        <div 
+                            className={`nav-item ${currentPage === 'mood' ? 'active' : ''}`} 
+                            onClick={() => setCurrentPage('mood')}
+                        >
+                            기분 기록장
+                        </div>
+                    </nav>
+
                     <Header />
+
                     <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '5rem' }}>
-                        <BirthInput onCalculate={handleBirth} />
-                        <ZodiacGrid onSelect={id => setSelectedFortune(zodiacData.find(d => d.id === id))} selectedId={selectedFortune?.id} />
-                        <FortuneCard fortune={selectedFortune} />
+                        {currentPage === 'fortune' ? (
+                            <>
+                                <BirthInput onCalculate={handleBirth} />
+                                <ZodiacGrid onSelect={id => setSelectedFortune(zodiacData.find(d => d.id === id))} selectedId={selectedFortune?.id} />
+                                <FortuneCard fortune={selectedFortune} />
+                            </>
+                        ) : (
+                            <MoodTracker />
+                        )}
                     </main>
+
                     <footer style={{ padding: '4rem 1rem 2rem', color: '#666', fontSize: '0.9rem', textAlign: 'center', background: 'rgba(0,0,0,0.3)', width: '100%' }}>
                         <p>© 2026 운수대통. 모든 권리는 보호받습니다.</p>
                     </footer>
