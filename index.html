@@ -1,13 +1,522 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />        
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>lucky</title>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운수대통 (運數大通)</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+    <!-- React & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide-react@latest"></script>
+    <style>
+        :root {
+            --color-gold: #d4af37;
+            --color-gold-dark: #aa841e;
+            --color-crimson: #8b0000;
+            --color-ink-black: #1a1a1a;
+            --color-paper: #f9f4e8;
+            --color-text: #333333;
+            --font-main: 'Noto Serif KR', serif;
+            --shadow-traditional: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --border-traditional: 2px solid var(--color-gold);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-ink-black);
+            color: var(--color-text);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at center, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        #root {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* Header Styles */
+        .header-section {
+            padding: 3rem 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+        .header-title {
+            color: var(--color-gold);
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .header-subtitle {
+            color: #ccc;
+            font-size: 1.1rem;
+            letter-spacing: 0.1rem;
+        }
+        .header-ornament {
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+        }
+
+        /* BirthInput Styles */
+        .birth-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 2rem;
+        }
+        .birth-title {
+            color: var(--color-gold);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        .birth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .input-label {
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .date-inputs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .input-field {
+            background: var(--color-ink-black);
+            border: 1px solid #444;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 4px;
+        }
+        .year-input { flex: 2; }
+        .select-input { flex: 1; cursor: pointer; }
+        .full-select { width: 100%; }
+        .submit-button {
+            background: var(--color-crimson);
+            color: var(--color-gold);
+            border: 1px solid var(--color-gold);
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .submit-button:hover {
+            background: var(--color-gold);
+            color: var(--color-crimson);
+        }
+
+        /* ZodiacGrid Styles */
+        .zodiac-grid-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        .zodiac-grid-title {
+            color: var(--color-gold);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .zodiac-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 1.5rem 0.5rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        .zodiac-button:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--color-gold);
+        }
+        .zodiac-button.selected {
+            background: var(--color-crimson);
+            border-color: var(--color-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .zodiac-hanja {
+            font-size: 1.8rem;
+            color: var(--color-gold);
+        }
+        .zodiac-name {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* FortuneCard Styles */
+        .card-wrapper {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fortune-card {
+            background-color: var(--color-paper);
+            border: 4px double var(--color-gold);
+            padding: 3rem 2rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: var(--color-ink-black);
+            text-align: center;
+        }
+        .card-hanja {
+            font-size: 3rem;
+            color: var(--color-crimson);
+            border: 2px solid var(--color-crimson);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+        }
+        .card-name {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-gold-dark);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .main-fortune {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            font-weight: 500;
+        }
+        .advice-box {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            text-align: left;
+        }
+        .lucky-elements {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .lucky-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .lucky-label { font-size: 0.75rem; color: #666; }
+        .lucky-value { font-weight: 700; color: var(--color-crimson); }
+
+        /* Lotto Styles */
+        .lotto-container {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px dashed var(--color-gold-dark);
+        }
+        .lotto-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-gold-dark);
+        }
+        .lotto-numbers {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .lotto-ball {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        .ball-0 { background-color: #fbc400; } /* 1-10 */
+        .ball-1 { background-color: #69c8f2; } /* 11-20 */
+        .ball-2 { background-color: #ff7272; } /* 21-30 */
+        .ball-3 { background-color: #aaa; }    /* 31-40 */
+        .ball-4 { background-color: #b0d840; } /* 41-45 */
+
+        .refresh-btn {
+            background: none;
+            border: 1px solid var(--color-gold-dark);
+            color: var(--color-gold-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .spinning { animation: spin 0.8s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 600px) {
+            .zodiac-grid { grid-template-columns: repeat(3, 1fr); }
+            .lucky-elements { grid-template-columns: 1fr; }
+            .header-title { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+        const { Calendar, Clock, Palette, Hash, Compass, Quote, Sparkles, RefreshCw } = LucideReact;
+
+        // --- Data ---
+        const zodiacData = [
+            { id: 'rat', name: '쥐띠', hanja: '子', zodiac: '자', fortune: '오늘은 작은 일에도 기쁨을 느끼게 될 것입니다. 주변 사람들과의 화합이 좋습니다.', advice: '성급한 판단보다는 한 발 물러서서 관찰하는 지혜가 필요합니다.', luckyColor: '하얀색', luckyNumber: 1, luckyDirection: '북쪽' },
+            { id: 'ox', name: '소띠', hanja: '丑', zodiac: '축', fortune: '꾸준한 노력이 결실을 맺는 하루입니다. 정직하게 행동하면 큰 보답이 있을 것입니다.', advice: '주위의 조언을 귀담아들으면 뜻밖의 기회를 잡을 수 있습니다.', luckyColor: '노란색', luckyNumber: 5, luckyDirection: '북동쪽' },
+            { id: 'tiger', name: '호랑이띠', hanja: '寅', zodiac: '인', fortune: '활기가 넘치는 하루입니다. 새로운 도전을 하기에 아주 좋은 시기입니다.', advice: '자신감을 가지되 독단적인 행동은 삼가야 합니다.', luckyColor: '초록색', luckyNumber: 3, luckyDirection: '동쪽' },
+            { id: 'rabbit', name: '토끼띠', hanja: '卯', zodiac: '묘', fortune: '평화롭고 안정적인 하루가 예상됩니다. 예술적인 감각이 빛을 발할 것입니다.', advice: '섬세한 감수성을 발휘하여 주변을 따뜻하게 보살펴보세요.', luckyColor: '연두색', luckyNumber: 4, luckyDirection: '동쪽' },
+            { id: 'dragon', name: '용띠', hanja: '辰', zodiac: '진', fortune: '강한 에너지가 분출되는 날입니다. 리더십을 발휘하여 일을 주도해 보세요.', advice: '너무 과한 욕심은 화를 부를 수 있으니 적절한 조절이 필요합니다.', luckyColor: '청색', luckyNumber: 5, luckyDirection: '동남쪽' },
+            { id: 'snake', name: '뱀띠', hanja: '巳', zodiac: '사', fortune: '직관력이 예리해지는 날입니다. 중요한 결정을 내리기에 적합한 시기입니다.', advice: '냉철한 분석을 통해 실수를 줄이는 것이 관건입니다.', luckyColor: '보라색', luckyNumber: 2, luckyDirection: '남동쪽' },
+            { id: 'horse', name: '말띠', hanja: '午', zodiac: '오', fortune: '시원하게 뻗어 나가는 운세입니다. 여행이나 이동수가 있어 활동량이 많아집니다.', advice: '열정을 불태우되 체력 안배에도 신경을 써야 합니다.', luckyColor: '빨간색', luckyNumber: 7, luckyDirection: '남쪽' },
+            { id: 'sheep', name: '양띠', hanja: '未', zodiac: '미', fortune: '온화하고 부드러운 기운이 감도는 날입니다. 대인관계에서 이득이 생깁니다.', advice: '양보하는 미덕을 발휘하면 더 큰 결과로 돌아올 것입니다.', luckyColor: '베이지색', luckyNumber: 8, luckyDirection: '남서쪽' },
+            { id: 'monkey', name: '원숭이띠', hanja: '申', zodiac: '신', fortune: '재치가 번뜩이는 하루입니다. 복잡한 문제도 쉽게 해결할 수 있는 날입니다.', advice: '지나친 장난은 오해를 부를 수 있으니 진중함도 잊지 마세요.', luckyColor: '금색', luckyNumber: 9, luckyDirection: '서남쪽' },
+            { id: 'rooster', name: '닭띠', hanja: '酉', zodiac: '유', fortune: '계획했던 일들이 착착 진행되는 날입니다. 성실함이 최고의 무기가 됩니다.', advice: '정확한 시간을 지키고 약속을 이행하는 자세가 중요합니다.', luckyColor: '은색', luckyNumber: 10, luckyDirection: '서쪽' },
+            { id: 'dog', name: '개띠', hanja: '戌', zodiac: '술', fortune: '충실한 노력에 대한 보상이 따르는 날입니다. 신뢰를 얻어 일이 잘 풀립니다.', advice: '의리를 지키는 모습이 주변 사람들에게 깊은 인상을 줄 것입니다.', luckyColor: '갈색', luckyNumber: 5, luckyDirection: '서북쪽' },
+            { id: 'pig', name: '돼지띠', hanja: '亥', zodiac: '해', fortune: '재물운이 상승하는 기분 좋은 하루입니다. 풍요로운 마음으로 지낼 수 있습니다.', advice: '베푸는 기쁨을 느껴보세요. 나중에 더 큰 복으로 돌아올 것입니다.', luckyColor: '검정색', luckyNumber: 6, luckyDirection: '북서쪽' },
+        ];
+
+        // --- Components ---
+
+        const Header = () => (
+            <header className="header-section">
+                <div className="header-ornament"></div>
+                <h1 className="header-title">운수대통 (運數大通)</h1>
+                <p className="header-subtitle">오늘의 운세를 확인하고 행운을 잡으세요</p>
+                <div className="header-ornament"></div>
+            </header>
+        );
+
+        const BirthInput = ({ onCalculate }) => {
+            const [year, setYear] = useState('');
+            const [month, setMonth] = useState('1');
+            const [day, setDay] = useState('1');
+            const [time, setTime] = useState('unknown');
+
+            const getDaysInMonth = (y, m) => new Date(y, m, 0).getDate();
+            const daysInMonth = useMemo(() => getDaysInMonth(Number(year) || 2026, Number(month)), [year, month]);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!year) return alert('연도를 입력해주세요.');
+                onCalculate(Number(year), Number(month), Number(day), time);
+            };
+
+            return (
+                <section className="birth-container">
+                    <h2 className="birth-title">사주 정보를 입력하세요</h2>
+                    <form onSubmit={handleSubmit} className="birth-form">
+                        <div className="input-group">
+                            <label className="input-label"><Calendar size={18} /> 생년월일</label>
+                            <div className="date-inputs">
+                                <input type="number" placeholder="YYYY" value={year} onChange={e => setYear(e.target.value)} className="input-field year-input" />
+                                <select value={month} onChange={e => setMonth(e.target.value)} className="input-field select-input">
+                                    {Array.from({length:12}, (_, i) => i+1).map(m => <option key={m} value={m}>{m}월</option>)}
+                                </select>
+                                <select value={day} onChange={e => setDay(e.target.value)} className="input-field select-input">
+                                    {Array.from({length:daysInMonth}, (_, i) => i+1).map(d => <option key={d} value={d}>{d}일</option>)}
+                                </select>
+                            </div>
+                        </div>
+                        <div className="input-group">
+                            <label className="input-label"><Clock size={18} /> 태어난 시간</label>
+                            <select value={time} onChange={e => setTime(e.target.value)} className="input-field full-select">
+                                <option value="unknown">모름</option>
+                                <option value="0">자시 (23:30 ~ 01:29)</option>
+                                <option value="1">축시 (01:30 ~ 03:29)</option>
+                                <option value="2">인시 (03:30 ~ 05:29)</option>
+                                <option value="3">묘시 (05:30 ~ 07:29)</option>
+                                <option value="4">진시 (07:30 ~ 09:29)</option>
+                                <option value="5">사시 (09:30 ~ 11:29)</option>
+                                <option value="6">오시 (11:30 ~ 13:29)</option>
+                                <option value="7">미시 (13:30 ~ 15:29)</option>
+                                <option value="8">신시 (15:30 ~ 17:29)</option>
+                                <option value="9">유시 (17:30 ~ 19:29)</option>
+                                <option value="10">술시 (19:30 ~ 21:29)</option>
+                                <option value="11">해시 (21:30 ~ 23:29)</option>
+                            </select>
+                        </div>
+                        <button type="submit" className="submit-button">운세 결과 보기</button>
+                    </form>
+                </section>
+            );
+        };
+
+        const ZodiacGrid = ({ onSelect, selectedId }) => (
+            <div className="zodiac-grid-container">
+                <h2 className="zodiac-grid-title">또는 띠를 직접 선택하세요</h2>
+                <div className="zodiac-grid">
+                    {zodiacData.map(item => (
+                        <button 
+                            key={item.id} 
+                            className={`zodiac-button ${selectedId === item.id ? 'selected' : ''}`}
+                            onClick={() => onSelect(item.id)}
+                        >
+                            <span className="zodiac-hanja">{item.hanja}</span>
+                            <span className="zodiac-name">{item.name}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        );
+
+        const LottoGenerator = ({ seedId }) => {
+            const [numbers, setNumbers] = useState([]);
+            const [spinning, setSpinning] = useState(false);
+
+            const generate = () => {
+                setSpinning(true);
+                setTimeout(() => {
+                    const res = [];
+                    while(res.length < 6) {
+                        const n = Math.floor(Math.random() * 45) + 1;
+                        if(!res.includes(n)) res.push(n);
+                    }
+                    setNumbers(res.sort((a,b) => a-b));
+                    setSpinning(false);
+                }, 800);
+            };
+
+            useEffect(generate, [seedId]);
+
+            return (
+                <div className="lotto-container">
+                    <div className="lotto-title"><Sparkles size={20} /> <h3>오늘의 행운 번호</h3></div>
+                    <div className="lotto-numbers">
+                        {numbers.map((n, i) => (
+                            <div key={i} className={`lotto-ball ball-${Math.floor((n-1)/10)}`}>{n}</div>
+                        ))}
+                    </div>
+                    <button className="refresh-btn" onClick={generate} disabled={spinning}>
+                        <RefreshCw size={16} className={spinning ? 'spinning' : ''} /> 다른 기운 받기
+                    </button>
+                </div>
+            );
+        };
+
+        const FortuneCard = ({ fortune }) => {
+            if(!fortune) return null;
+            return (
+                <div id="fortune-result" className="card-wrapper">
+                    <div className="fortune-card">
+                        <div className="card-hanja">{fortune.hanja}</div>
+                        <h2 className="card-name">{fortune.name}의 오늘의 운세</h2>
+                        <p className="main-fortune">{fortune.fortune}</p>
+                        <div className="advice-box">
+                            <Quote size={20} color="#8b0000" />
+                            <p>{fortune.advice}</p>
+                        </div>
+                        <div className="lucky-elements">
+                            <div className="lucky-item"><Palette size={24} /> <span className="lucky-label">행운의 색상</span><span className="lucky-value">{fortune.luckyColor}</span></div>
+                            <div className="lucky-item"><Hash size={24} /> <span className="lucky-label">행운의 숫자</span><span className="lucky-value">{fortune.luckyNumber}</span></div>
+                            <div className="lucky-item"><Compass size={24} /> <span className="lucky-label">행운의 방위</span><span className="lucky-value">{fortune.luckyDirection}</span></div>
+                        </div>
+                        <LottoGenerator seedId={fortune.id} />
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [selectedFortune, setSelectedFortune] = useState(null);
+
+            const calculateZodiac = (year) => {
+                const map = { 0:'monkey', 1:'rooster', 2:'dog', 3:'pig', 4:'rat', 5:'ox', 6:'tiger', 7:'rabbit', 8:'dragon', 9:'snake', 10:'horse', 11:'sheep' };
+                return map[year % 12];
+            };
+
+            const handleBirth = (y) => {
+                const id = calculateZodiac(y);
+                const fortune = zodiacData.find(d => d.id === id);
+                setSelectedFortune(fortune);
+                setTimeout(() => document.getElementById('fortune-result')?.scrollIntoView({ behavior: 'smooth' }), 100);
+            };
+
+            return (
+                <>
+                    <Header />
+                    <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '5rem' }}>
+                        <BirthInput onCalculate={handleBirth} />
+                        <ZodiacGrid onSelect={id => setSelectedFortune(zodiacData.find(d => d.id === id))} selectedId={selectedFortune?.id} />
+                        <FortuneCard fortune={selectedFortune} />
+                    </main>
+                    <footer style={{ padding: '4rem 1rem 2rem', color: '#666', fontSize: '0.9rem', textAlign: 'center', background: 'rgba(0,0,0,0.3)', width: '100%' }}>
+                        <p>© 2026 운수대통. 모든 권리는 보호받습니다.</p>
+                    </footer>
+                </>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
 </html>
