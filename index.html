@@ -127,6 +127,31 @@
         .year-input { flex: 2; }
         .select-input { flex: 1; cursor: pointer; }
         .full-select { width: 100%; }
+        
+        /* Calendar Type Toggle */
+        .calendar-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 4px;
+            margin-bottom: 1rem;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            background: none;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .toggle-btn.active {
+            background: var(--color-gold);
+            color: var(--color-ink-black);
+            font-weight: 700;
+        }
+
         .submit-button {
             background: var(--color-crimson);
             color: var(--color-gold);
@@ -368,6 +393,7 @@
         );
 
         const BirthInput = ({ onCalculate }) => {
+            const [calendarType, setCalendarType] = useState('solar'); // 'solar' or 'lunar'
             const [year, setYear] = useState('');
             const [month, setMonth] = useState('1');
             const [day, setDay] = useState('1');
@@ -379,15 +405,32 @@
             const handleSubmit = (e) => {
                 e.preventDefault();
                 if (!year) return alert('연도를 입력해주세요.');
-                onCalculate(Number(year), Number(month), Number(day), time);
+                onCalculate(Number(year), Number(month), Number(day), time, calendarType);
             };
 
             return (
                 <section className="birth-container">
                     <h2 className="birth-title">사주 정보를 입력하세요</h2>
                     <form onSubmit={handleSubmit} className="birth-form">
+                        <div className="calendar-toggle">
+                            <button 
+                                type="button" 
+                                className={`toggle-btn ${calendarType === 'solar' ? 'active' : ''}`}
+                                onClick={() => setCalendarType('solar')}
+                            >
+                                양력
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`toggle-btn ${calendarType === 'lunar' ? 'active' : ''}`}
+                                onClick={() => setCalendarType('lunar')}
+                            >
+                                음력
+                            </button>
+                        </div>
+
                         <div className="input-group">
-                            <label className="input-label"><Calendar size={18} /> 생년월일</label>
+                            <label className="input-label"><Calendar size={18} /> {calendarType === 'solar' ? '양력' : '음력'} 생년월일</label>
                             <div className="date-inputs">
                                 <input type="number" placeholder="YYYY" value={year} onChange={e => setYear(e.target.value)} className="input-field year-input" />
                                 <select value={month} onChange={e => setMonth(e.target.value)} className="input-field select-input">
