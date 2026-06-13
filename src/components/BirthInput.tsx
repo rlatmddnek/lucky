@@ -12,6 +12,13 @@ const BirthInput = ({ onCalculate }: BirthInputProps) => {
   const [day, setDay] = useState<string>('1');
   const [time, setTime] = useState<string>('unknown');
 
+  const getDaysInMonth = (y: number, m: number) => {
+    return new Date(y, m, 0).getDate();
+  };
+
+  const currentYear = Number(year) || 2026;
+  const daysInMonth = getDaysInMonth(currentYear, Number(month));
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!year || isNaN(Number(year))) {
@@ -19,6 +26,15 @@ const BirthInput = ({ onCalculate }: BirthInputProps) => {
       return;
     }
     onCalculate(Number(year), Number(month), Number(day), time);
+  };
+
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMonth = e.target.value;
+    setMonth(newMonth);
+    const newDaysInMonth = getDaysInMonth(currentYear, Number(newMonth));
+    if (Number(day) > newDaysInMonth) {
+      setDay(newDaysInMonth.toString());
+    }
   };
 
   return (
@@ -40,13 +56,13 @@ const BirthInput = ({ onCalculate }: BirthInputProps) => {
               min="1900"
               max="2026"
             />
-            <select value={month} onChange={(e) => setMonth(e.target.value)} className={styles.select}>
+            <select value={month} onChange={handleMonthChange} className={styles.select}>
               {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
                 <option key={m} value={m}>{m}월</option>
               ))}
             </select>
             <select value={day} onChange={(e) => setDay(e.target.value)} className={styles.select}>
-              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+              {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
                 <option key={d} value={d}>{d}일</option>
               ))}
             </select>
