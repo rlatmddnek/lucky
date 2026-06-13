@@ -529,6 +529,25 @@
             font-size: 0.9rem;
             color: #ccc;
         }
+        .store-search-btn {
+            margin-top: 0.5rem;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--color-gold);
+            color: var(--color-gold);
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .store-search-btn:hover {
+            background: var(--color-gold);
+            color: var(--color-ink-black);
+        }
 
         @media (max-width: 600px) {
             .zodiac-grid { grid-template-columns: repeat(3, 1fr); }
@@ -557,7 +576,9 @@
             MapPin = () => null,
             Utensils = () => null,
             CloudRain = () => null,
-            Sun = () => null
+            Sun = () => null,
+            Search = () => null,
+            ExternalLink = () => null
         } = LucideIcons;
 
         // --- Data ---
@@ -1000,6 +1021,14 @@
                                 </div>
                                 <div className="recommend-food">{recommendation.food}</div>
                                 <div className="recommend-reason">{recommendation.reason}</div>
+                                <a 
+                                    href={`https://map.naver.com/v5/search/${encodeURIComponent(weather.city + ' ' + recommendation.food)}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="store-search-btn"
+                                >
+                                    <Search size={14} /> 근처 맛집 찾기 <ExternalLink size={12} />
+                                </a>
                             </div>
                         )}
 
