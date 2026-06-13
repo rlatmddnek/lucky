@@ -927,9 +927,7 @@
         };
 
         const MoodTracker = () => {
-            const [moods, setMoods] = useState(() => JSON.parse(localStorage.getItem('moodHistory') || '[]'));
             const [selectedEmoji, setSelectedEmoji] = useState(null);
-            const [note, setNote] = useState('');
             const [weather, setWeather] = useState({ condition: 'loading', temp: '', city: '위치 파악 중...' });
             const [recommendation, setRecommendation] = useState(null);
 
@@ -1033,22 +1031,6 @@
                 }
             }, [selectedEmoji, weather]);
 
-            const saveMood = () => {
-                if (!selectedEmoji) return alert('기분을 선택해주세요!');
-                const newMood = {
-                    emoji: selectedEmoji,
-                    note: note,
-                    food: recommendation?.food,
-                    date: new Date().toLocaleString('ko-KR')
-                };
-                const updatedHistory = [newMood, ...moods];
-                setMoods(updatedHistory);
-                localStorage.setItem('moodHistory', JSON.stringify(updatedHistory));
-                setSelectedEmoji(null);
-                setNote('');
-                alert('오늘의 기분과 추천 음식이 저장되었습니다!');
-            };
-
             return (
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div className="mood-container">
@@ -1087,32 +1069,6 @@
                                     <Search size={14} /> 근처 맛집 찾기 <ExternalLink size={12} />
                                 </a>
                             </div>
-                        )}
-
-                        <textarea 
-                            className="mood-note-area" 
-                            placeholder="오늘의 기분이나 짧은 일기를 적어보세요..." 
-                            value={note}
-                            onChange={e => setNote(e.target.value)}
-                        />
-                        <button className="save-mood-btn" onClick={saveMood}>저장하기</button>
-                    </div>
-
-                    <div className="mood-history">
-                        <h3 style={{ color: 'var(--color-gold)', marginBottom: '1.5rem' }}>오늘 기분에는 이거지 리스트</h3>
-                        {moods.length === 0 ? (
-                            <p style={{ color: '#888', textAlign: 'center' }}>아직 기록이 없습니다.</p>
-                        ) : (
-                            moods.map((item, i) => (
-                                <div key={i} className="history-item">
-                                    <div className="history-emoji">{item.emoji}</div>
-                                    <div className="history-content">
-                                        <div className="history-date">{item.date}</div>
-                                        {item.note && <div className="history-note">{item.note}</div>}
-                                        {item.food && <div className="history-note" style={{ color: 'var(--color-gold)', fontSize: '0.85rem' }}>🍴 추천 음식: {item.food}</div>}
-                                    </div>
-                                </div>
-                            ))
                         )}
                     </div>
                 </div>
