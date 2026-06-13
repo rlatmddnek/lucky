@@ -39,7 +39,30 @@
             line-height: 1.6;
             min-height: 100vh;
             background-image: radial-gradient(circle at center, #2a2a2a 0%, #1a1a1a 100%);
+            transition: background 0.5s ease;
         }
+
+        /* Refreshing Mood Background */
+        body.mood-mode {
+            background-color: #f0f9ff;
+            background-image: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 50%, #fefce8 100%);
+            color: #334155;
+        }
+
+        body.mood-mode .header-title { color: #0f172a; text-shadow: none; }
+        body.mood-mode .header-subtitle { color: #64748b; }
+        body.mood-mode .nav-bar { background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid rgba(15, 23, 42, 0.1); }
+        body.mood-mode .nav-item { color: #64748b; }
+        body.mood-mode .nav-item.active { color: #0f172a; background: rgba(15, 23, 42, 0.05); }
+        body.mood-mode .mood-container { background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-color: rgba(15, 23, 42, 0.1); }
+        body.mood-mode .mood-title { color: #0f172a; }
+        body.mood-mode .mood-btn { background: #f8fafc; color: #0f172a; }
+        body.mood-mode .mood-btn.selected { background: #e0f2fe; border-color: #3b82f6; }
+        body.mood-mode .mood-note-area { background: #f8fafc; color: #0f172a; border-color: #e2e8f0; }
+        body.mood-mode .recommend-context { background: #f1f5f9; color: #475569; }
+        body.mood-mode .history-item { background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        body.mood-mode .history-date { color: #94a3b8; }
+        body.mood-mode .history-note { color: #475569; }
 
         #root {
             width: 100%;
@@ -1065,6 +1088,14 @@
         const App = () => {
             const [currentPage, setCurrentPage] = useState('fortune'); // 'fortune' or 'mood'
             const [selectedFortune, setSelectedFortune] = useState(null);
+
+            useEffect(() => {
+                if (currentPage === 'mood') {
+                    document.body.classList.add('mood-mode');
+                } else {
+                    document.body.classList.remove('mood-mode');
+                }
+            }, [currentPage]);
 
             const calculateZodiac = (year) => {
                 const map = { 0:'monkey', 1:'rooster', 2:'dog', 3:'pig', 4:'rat', 5:'ox', 6:'tiger', 7:'rabbit', 8:'dragon', 9:'snake', 10:'horse', 11:'sheep' };
