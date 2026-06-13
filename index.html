@@ -444,55 +444,48 @@
             margin-bottom: 1.5rem;
         }
         .mood-selector {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
+            width: 100%;
         }
-        .mood-btn {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            font-size: 2.2rem;
-            padding: 0;
-            border-radius: 20px;
-            width: 80px;
-            height: 80px;
+        .mood-chip {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 0.5rem;
+            border-radius: 16px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            gap: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        .mood-btn:hover {
-            transform: translateY(-10px) scale(1.1);
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 15px 20px rgba(0,0,0,0.1);
-        }
-        .mood-btn.selected {
+        .mood-chip:hover {
+            transform: translateY(-5px);
             background: white;
-            border-color: var(--color-gold);
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-            animation: pulse 2s infinite;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-        }
-        
-        body.mood-mode .mood-btn {
-            background: rgba(255, 255, 255, 0.6);
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-        body.mood-mode .mood-btn.selected {
+        .mood-chip.selected {
             background: white;
-            border-color: #3b82f6;
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+            border-color: currentColor;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+            transform: scale(1.05);
         }
+        .mood-chip-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .mood-chip.selected .mood-chip-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+        .mood-chip-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            opacity: 0.8;
+        }
+
         .mood-note-area {
             width: 100%;
             background: var(--color-ink-black);
@@ -619,12 +612,23 @@
             RefreshCw = () => null,
             MapPin = () => null,
             Utensils = () => null,
-            CloudRain = () => null,
+            CloudRain = () => null, 
             Sun = () => null,
             Search = () => null,
-            ExternalLink = () => null
-        } = LucideIcons;
-
+            ExternalLink = () => null,
+            Smile = () => null,
+            Star = () => null,
+            Music = () => null,
+            Sunglasses = () => null,
+            Heart = () => null,
+            Brain = () => null,
+            Moon = () => null,
+            Zap = () => null,
+            Frown = () => null,
+            CloudLightning = () => null,
+            Thermometer = () => null,
+            Flame = () => null
+            } = LucideIcons;
         // --- Data ---
         const zodiacData = [
             { 
@@ -948,69 +952,69 @@
         };
 
         const MoodTracker = () => {
-            const [selectedEmoji, setSelectedEmoji] = useState(null);
+            const [selectedId, setSelectedId] = useState(null);
             const [weather, setWeather] = useState({ condition: 'loading', temp: '', city: '위치 파악 중...' });
             const [recommendation, setRecommendation] = useState(null);
 
-            const emojis = [
-                { emoji: '😊', label: '행복' },
-                { emoji: '🤩', label: '신남' },
-                { emoji: '🥳', label: '축하' },
-                { emoji: '😎', label: '자신감' },
-                { emoji: '😇', label: '평온' },
-                { emoji: '🤔', label: '고민' },
-                { emoji: '😴', label: '피곤' },
-                { emoji: '😤', label: '의욕' },
-                { emoji: '😢', label: '슬픔' },
-                { emoji: '😭', label: '우울' },
-                { emoji: '🤒', label: '아픔' },
-                { emoji: '🔥', label: '열정' }
+            const moodsList = [
+                { id: 'happy', icon: <Smile />, label: '행복', color: '#f59e0b' },
+                { id: 'excited', icon: <Star />, label: '신남', color: '#ef4444' },
+                { id: 'party', icon: <Music />, label: '즐거움', color: '#ec4899' },
+                { id: 'cool', icon: <Sunglasses />, label: '자신감', color: '#6366f1' },
+                { id: 'peaceful', icon: <Heart />, label: '평온', color: '#10b981' },
+                { id: 'thinking', icon: <Brain />, label: '고민', color: '#8b5cf6' },
+                { id: 'tired', icon: <Moon />, label: '피곤', color: '#64748b' },
+                { id: 'energy', icon: <Zap />, label: '의욕', color: '#facc15' },
+                { id: 'sad', icon: <Frown />, label: '슬픔', color: '#3b82f6' },
+                { id: 'stormy', icon: <CloudLightning />, label: '우울', color: '#1e293b' },
+                { id: 'sick', icon: <Thermometer />, label: '아픔', color: '#f97316' },
+                { id: 'fire', icon: <Flame />, label: '열정', color: '#dc2626' }
             ];
 
             const foodMap = {
-                '😊': {
+                'happy': {
                     'Clear': { food: '디저트 카페', reason: '맑은 날씨와 행복한 기분엔 달콤한 디저트가 최고죠!' },
                     'Rain': { food: '벨기에 와플', reason: '비 오는 날의 행복을 달콤하게 채워보세요.' },
                     'default': { food: '마카롱', reason: '기분 좋은 하루를 더 상큼하게 만들어줄 거예요.' }
                 },
-                '🤩': {
+                'excited': {
                     'Clear': { food: '패밀리 레스토랑', reason: '신나는 기분 그대로! 다양한 맛이 있는 뷔페나 레스토랑 어때요?' },
                     'default': { food: '피자', reason: '기분 좋은 에너지를 한 입 가득 채워보세요!' }
                 },
-                '🥳': {
+                'party': {
                     'default': { food: '치킨', reason: '특별한 날, 축하 파티엔 역시 치킨이 빠질 수 없죠!' }
                 },
-                '😎': {
+                'cool': {
                     'Clear': { food: '루프탑 바', reason: '자신감 넘치는 날, 멋진 전망과 함께 분위기를 즐겨보세요.' },
                     'default': { food: '수제버거', reason: '특별한 나를 위한 든든하고 멋진 한 끼!' }
                 },
-                '😇': {
+                'peaceful': {
                     'default': { food: '찻집', reason: '평온한 마음을 더 깊게 해줄 따뜻한 차 한 잔 어떨까요?' },
                     'Clear': { food: '사찰 음식', reason: '정갈한 음식으로 몸과 마음의 평화를 더해보세요.' }
                 },
-                '🤔': {
+                'thinking': {
                     'default': { food: '초밥', reason: '깔끔한 초밥과 함께 생각을 정리해보는 건 어떨까요?' },
                     'Rain': { food: '베트남 쌀국수', reason: '따뜻한 국물과 함께 복잡한 마음을 차분히 가라앉히세요.' }
                 },
-                '😴': {
+                'tired': {
                     'default': { food: '에스프레소 카페', reason: '피곤할 땐 진한 커피 한 잔으로 에너지를 충전하세요.' },
                     'Clear': { food: '브런치 빈', reason: '맑은 공기와 가벼운 브런치로 생기를 되찾으세요.' }
                 },
-                '😤': {
+                'energy': {
                     'default': { food: '매운 갈비찜', reason: '의욕 충만한 날, 화끈한 매운맛으로 에너지를 발산해보세요!' }
                 },
-                '😢': {
+                'sad': {
                     'Rain': { food: '해물파전', reason: '비 오는 날의 우울함을 고소한 파전이 달래줄 거예요.' },
                     'Clear': { food: '젤라또', reason: '맑은 하늘 아래 달콤한 아이스크림으로 기운을 내보세요.' },
                     'default': { food: '매운 떡볶이', reason: '화끈한 매운맛으로 슬픔을 날려버리세요!' }
                 },
-                '😭': {
+                'stormy': {
                     'default': { food: '삼겹살', reason: '기운 없을 땐 고기 앞으로! 든든한 삼겹살로 위로받으세요.' }
                 },
-                '🤒': {
+                'sick': {
                     'default': { food: '본죽', reason: '몸이 안 좋을 땐 따뜻하고 소화 잘 되는 죽이 최고입니다.' }
                 },
-                '🔥': {
+                'fire': {
                     'Clear': { food: '스테이크 하우스', reason: '불타는 열정엔 그에 걸맞는 고기 요리가 제격입니다.' },
                     'default': { food: '마라탕', reason: '뜨거운 열정을 더 뜨겁게 만들어줄 화끈한 맛!' }
                 },
@@ -1023,7 +1027,6 @@
                         navigator.geolocation.getCurrentPosition(async (position) => {
                             try {
                                 const { latitude, longitude } = position.coords;
-                                // Use wttr.in for weather (no API key required)
                                 const res = await fetch(`https://wttr.in/${latitude},${longitude}?format=j1`);
                                 const data = await res.json();
                                 const condition = data.current_condition[0].weatherDesc[0].value;
@@ -1042,15 +1045,15 @@
             }, []);
 
             useEffect(() => {
-                if (selectedEmoji) {
+                if (selectedId) {
                     const cond = weather.condition.includes('Rain') ? 'Rain' : (weather.condition.includes('Clear') || weather.condition.includes('Sunny') ? 'Clear' : 'default');
-                    const moodRecommends = foodMap[selectedEmoji] || foodMap['default'];
+                    const moodRecommends = foodMap[selectedId] || foodMap['default'];
                     const recommend = moodRecommends[cond] || moodRecommends['default'] || foodMap['default'];
                     setRecommendation(recommend);
                 } else {
                     setRecommendation(null);
                 }
-            }, [selectedEmoji, weather]);
+            }, [selectedId, weather]);
 
             return (
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -1061,16 +1064,17 @@
                             <MapPin size={14} inline /> {weather.city} | {weather.condition === 'loading' ? '날씨 정보 로딩 중...' : `${weather.condition}, ${weather.temp}°C`}
                         </div>
 
-                        <div className="mood-selector" style={{ marginTop: '1rem' }}>
-                            {emojis.map(e => (
-                                <button 
-                                    key={e.label} 
-                                    className={`mood-btn ${selectedEmoji === e.emoji ? 'selected' : ''}`}
-                                    onClick={() => setSelectedEmoji(e.emoji)}
-                                    title={e.label}
+                        <div className="mood-selector" style={{ marginTop: '1.5rem' }}>
+                            {moodsList.map(m => (
+                                <div 
+                                    key={m.id} 
+                                    className={`mood-chip ${selectedId === m.id ? 'selected' : ''}`}
+                                    onClick={() => setSelectedId(m.id)}
+                                    style={{ color: m.color }}
                                 >
-                                    {e.emoji}
-                                </button>
+                                    <div className="mood-chip-icon">{m.icon}</div>
+                                    <span className="mood-chip-label">{m.label}</span>
+                                </div>
                             ))}
                         </div>
 
