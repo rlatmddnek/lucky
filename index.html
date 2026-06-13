@@ -461,24 +461,54 @@
             gap: 0.5rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+            animation-delay: calc(var(--index) * 0.1s);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         .mood-chip:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.05) !important;
             background: white;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 10;
         }
         .mood-chip.selected {
             background: white;
             border-color: currentColor;
             box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
-            transform: scale(1.05);
+            transform: scale(1.1) !important;
+            animation: selectedPulse 0.5s ease-out;
+        }
+        .mood-chip.selected::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 16px;
+            border: 2px solid currentColor;
+            animation: sonar 1.5s scroll ease-out infinite;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+        @keyframes selectedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1.1); }
         }
         .mood-chip-icon {
             font-size: 1.5rem;
             transition: transform 0.3s;
         }
         .mood-chip.selected .mood-chip-icon {
-            transform: scale(1.2) rotate(5deg);
+            animation: iconShake 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes iconShake {
+            from { transform: rotate(-10deg) scale(1.2); }
+            to { transform: rotate(10deg) scale(1.2); }
         }
         .mood-chip-label {
             font-size: 0.8rem;
@@ -1065,12 +1095,12 @@
                         </div>
 
                         <div className="mood-selector" style={{ marginTop: '1.5rem' }}>
-                            {moodsList.map(m => (
+                            {moodsList.map((m, idx) => (
                                 <div 
                                     key={m.id} 
                                     className={`mood-chip ${selectedId === m.id ? 'selected' : ''}`}
                                     onClick={() => setSelectedId(m.id)}
-                                    style={{ color: m.color }}
+                                    style={{ color: m.color, '--index': idx }}
                                 >
                                     <div className="mood-chip-icon">{m.icon}</div>
                                     <span className="mood-chip-label">{m.label}</span>
