@@ -42,8 +42,6 @@ describe('BirthInput Component', () => {
     fireEvent.change(monthSelect, { target: { value: '2' } });
     
     // February 2026 has 28 days
-    const dayOptions = screen.getAllByRole('option');
-    // 12 months + 28 days = 40 options? No, wait.
     // Let's check specifically for the day select options.
     const daySelect = screen.getAllByRole('combobox')[1]; // Second select is day
     const options = daySelect.querySelectorAll('option');

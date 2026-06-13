@@ -34,8 +34,6 @@ describe('LottoGenerator Component', () => {
       vi.advanceTimersByTime(800);
     });
     
-    const initialBalls = screen.getAllByText(/[0-9]+/).map(ball => ball.textContent);
-    
     const refreshButton = screen.getByRole('button', { name: /다른 기운 받기/i });
     fireEvent.click(refreshButton);
     
@@ -47,7 +45,6 @@ describe('LottoGenerator Component', () => {
       vi.advanceTimersByTime(800);
     });
     
-    const newBalls = screen.getAllByText(/[0-9]+/).map(ball => ball.textContent);
     expect(refreshButton).not.toBeDisabled();
   });
 });
