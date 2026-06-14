@@ -16,7 +16,7 @@ const FortuneCard = ({ fortune }: FortuneCardProps) => {
         <div className={styles.topPattern}></div>
         
         <div className={styles.header}>
-          <span className={styles.hanja}>{fortune.hanja}</span>
+          <span className={styles.emoji}>{fortune.emoji}</span>
           <h2 className={styles.name}>{fortune.name}의 오늘의 운세</h2>
         </div>
 

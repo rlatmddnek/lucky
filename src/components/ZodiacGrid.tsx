@@ -17,7 +17,7 @@ const ZodiacGrid = ({ onSelect, selectedId }: ZodiacGridProps) => {
             className={`${styles.zodiacButton} ${selectedId === item.id ? styles.selected : ''}`}
             onClick={() => onSelect(item.id)}
           >
-            <span className={styles.hanja}>{item.hanja}</span>
+            <span className={styles.emoji}>{item.emoji}</span>
             <span className={styles.name}>{item.name}</span>
           </button>
         ))}
