@@ -1,17 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import ZodiacGrid from './components/ZodiacGrid';
 import FortuneCard from './components/FortuneCard';
 import BirthInput from './components/BirthInput';
 import FortuneCookie from './components/FortuneCookie';
+import MoodTracker from './components/MoodTracker';
 import { zodiacData, type FortuneData } from './data/fortunes';
 import './styles/global.css';
 
-type Page = 'zodiac' | 'cookie';
+type Page = 'zodiac' | 'cookie' | 'mood';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('zodiac');
   const [selectedFortune, setSelectedFortune] = useState<FortuneData | null>(null);
+
+  useEffect(() => {
+    if (currentPage === 'mood') {
+      document.body.classList.add('mood-mode');
+    } else {
+      document.body.classList.remove('mood-mode');
+    }
+  }, [currentPage]);
 
   const calculateZodiac = (year: number) => {
     // (연도 % 12)의 결과에 따른 띠 매핑
@@ -60,7 +69,7 @@ function App() {
         backdropFilter: 'blur(10px)',
         display: 'flex',
         justifyContent: 'center',
-        gap: '2rem',
+        gap: '1rem',
         padding: '1rem',
         borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
         zIndex: 1000
@@ -74,7 +83,8 @@ function App() {
             borderRadius: '20px',
             cursor: 'pointer',
             fontWeight: 500,
-            transition: 'all 0.3s'
+            transition: 'all 0.3s',
+            fontSize: '0.9rem'
           }}
         >
           운수대통
@@ -88,17 +98,33 @@ function App() {
             borderRadius: '20px',
             cursor: 'pointer',
             fontWeight: 500,
-            transition: 'all 0.3s'
+            transition: 'all 0.3s',
+            fontSize: '0.9rem'
           }}
         >
           포춘쿠키
+        </div>
+        <div 
+          onClick={() => setCurrentPage('mood')}
+          style={{
+            color: currentPage === 'mood' ? 'var(--color-gold)' : '#aaa',
+            background: currentPage === 'mood' ? 'rgba(212, 175, 55, 0.1)' : 'transparent',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            cursor: 'pointer',
+            fontWeight: 500,
+            transition: 'all 0.3s',
+            fontSize: '0.9rem'
+          }}
+        >
+          오늘의 기분
         </div>
       </nav>
 
       {currentPage === 'zodiac' && <Header />}
 
       <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '5rem' }}>
-        {currentPage === 'zodiac' ? (
+        {currentPage === 'zodiac' && (
           <>
             <BirthInput onCalculate={handleBirthSubmit} />
             
@@ -112,11 +138,11 @@ function App() {
               <FortuneCard fortune={selectedFortune} />
             </div>
           </>
-        ) : (
-          <FortuneCookie />
         )}
+        {currentPage === 'cookie' && <FortuneCookie />}
+        {currentPage === 'mood' && <MoodTracker />}
       </main>
-      <footer style={{ padding: '4rem 1rem 2rem', color: '#666', fontSize: '0.9rem', textAlign: 'center', background: 'rgba(0,0,0,0.3)' }}>
+      <footer style={{ padding: '4rem 1rem 2rem', color: '#666', fontSize: '0.9rem', textAlign: 'center', background: 'rgba(0,0,0,0.3)', width: '100%' }}>
         <p>© 2026 운수대통. 모든 권리는 보호받습니다.</p>
         <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>본 운세는 참고용이며, 당신의 운명은 스스로의 노력으로 개척하는 것입니다.</p>
       </footer>

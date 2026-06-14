@@ -1,0 +1,186 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.title {
+  color: var(--color-gold);
+  margin-bottom: 1.5rem;
+}
+
+.weatherContext {
+  font-size: 0.85rem;
+  color: #aaa;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inlineIcon {
+  flex-shrink: 0;
+}
+
+.moodSelector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.moodChip {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1rem 0.5rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  animation: float 3s ease-in-out infinite;
+  animation-delay: calc(var(--index) * 0.1s);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.moodChip:hover {
+  transform: translateY(-8px) scale(1.05) !important;
+  background: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.moodChip.selected {
+  background: white;
+  border-color: currentColor;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+  transform: scale(1.1) !important;
+  animation: selectedPulse 0.5s ease-out;
+}
+
+.moodChip.selected::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 16px;
+  border: 2px solid currentColor;
+  animation: sonar 1.5s ease-out infinite;
+}
+
+@keyframes sonar {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes selectedPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1.1); }
+}
+
+.moodIcon {
+  font-size: 1.5rem;
+  transition: transform 0.3s;
+}
+
+.moodChip.selected .moodIcon {
+  animation: iconShake 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes iconShake {
+  from { transform: rotate(-10deg) scale(1.2); }
+  to { transform: rotate(10deg) scale(1.2); }
+}
+
+.moodLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.recommendationBox {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px dashed var(--color-gold);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recommendTitle {
+  color: var(--color-gold);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.recommendFood {
+  font-size: 1.2rem;
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.recommendReason {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.storeSearchBtn {
+  margin-top: 0.5rem;
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.storeSearchBtn:hover {
+  background: var(--color-gold);
+  color: var(--color-ink-black);
+}
+
+@media (max-width: 600px) {
+  .moodSelector {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
