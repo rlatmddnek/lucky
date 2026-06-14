@@ -349,11 +349,21 @@
             margin-top: 2rem;
             text-align: center;
         }
+        .recommend-context {
+            font-size: 0.85rem;
+            color: #aaa;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
         .mood-selector {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 0.8rem;
-            margin-top: 1.5rem;
         }
         .mood-chip {
             background: rgba(255, 255, 255, 0.6);
@@ -370,6 +380,34 @@
             background: white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             transform: scale(1.1);
+            border: 2px solid currentColor;
+        }
+        .recommendation-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px dashed var(--color-gold);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .recommend-food {
+            font-size: 1.2rem;
+            color: var(--color-gold-dark);
+            font-weight: 700;
+        }
+        .store-search-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--color-gold);
+            color: var(--color-gold);
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
         }
 
         .lotto-container {
@@ -446,16 +484,24 @@
             { id: 'rat', name: '쥐띠', emoji: '🐭', fortune: '오늘은 작은 일에도 기쁨을 느끼게 될 것입니다.', advice: '성급한 판단보다는 한 발 물러서세요.', luckyColor: '하얀색', luckyNumber: 1, luckyDirection: '북쪽', luckyMissions: ["파란색 필기구 사용하기", "먼저 인사하기"] },
             { id: 'ox', name: '소띠', emoji: '🐮', fortune: '꾸준한 노력이 결실을 맺는 하루입니다.', advice: '주위의 조언을 귀담아드세요.', luckyColor: '노란색', luckyNumber: 5, luckyDirection: '북동쪽', luckyMissions: ["5초간 웃기", "물 한 잔 마시기"] },
             { id: 'tiger', name: '호랑이띠', emoji: '🐯', fortune: '활기가 넘치는 하루입니다.', advice: '자신감을 가지되 독단은 삼가세요.', luckyColor: '초록색', luckyNumber: 3, luckyDirection: '동쪽', luckyMissions: ["기지개 켜기", "신곡 듣기"] },
-            { id: 'rabbit', name: '토끼띠', emoji: '🐰', fortune: '평화롭고 안정적인 하루입니다.', advice: '주변을 따뜻하게 보살피세요.', luckyColor: '연두색', luckyNumber: 4, luckyDirection: '동쪽', luckyMissions: ["식물 물 주기", "칭찬하기"] },
+            { id: 'rabbit', name: '토끼띠', emoji: '🐰', fortune: '평화롭고 안정적인 하루입니다.', advice: '주변을 따뜻하게 보살펴보세요.', luckyColor: '연두색', luckyNumber: 4, luckyDirection: '동쪽', luckyMissions: ["식물 물 주기", "칭찬하기"] },
             { id: 'dragon', name: '용띠', emoji: '🐲', fortune: '강한 에너지가 분출되는 날입니다.', advice: '욕심은 적절히 조절하세요.', luckyColor: '청색', luckyNumber: 5, luckyDirection: '동남쪽', luckyMissions: ["계단 오르기", "목록 작성"] },
             { id: 'snake', name: '뱀띠', emoji: '🐍', fortune: '직관력이 예리해지는 날입니다.', advice: '냉철한 분석이 필요합니다.', luckyColor: '보라색', luckyNumber: 2, luckyDirection: '남동쪽', luckyMissions: ["심호흡 3번", "정리정돈"] },
             { id: 'horse', name: '말띠', emoji: '🐴', fortune: '시원하게 뻗어 나가는 운세입니다.', advice: '열정을 불태우되 체력도 챙기세요.', luckyColor: '빨간색', luckyNumber: 7, luckyDirection: '남쪽', luckyMissions: ["환기하기", "산책 10분"] },
             { id: 'sheep', name: '양띠', emoji: '🐑', fortune: '온화하고 부드러운 기운이 감돕니다.', advice: '양보하면 더 큰 복이 옵니다.', luckyColor: '베이지색', luckyNumber: 8, luckyDirection: '남서쪽', luckyMissions: ["안부 묻기", "차 마시기"] },
             { id: 'monkey', name: '원숭이띠', emoji: '🐵', fortune: '재치가 번뜩이는 하루입니다.', advice: '지나친 장난은 오해를 부릅니다.', luckyColor: '금색', luckyNumber: 9, luckyDirection: '서남쪽', luckyMissions: ["농담 한 마디", "주변 정리"] },
-            { id: 'rooster', name: '닭띠', emoji: '🐔', fortune: '계획했던 일들이 착착 진행됩니다.', advice: '성실함이 최고의 무기입니다.', luckyColor: '은색', luckyNumber: 10, luckyDirection: '서쪽', luckyMissions: ["알람 변경", "5분 일찍 가기"] },
+            { id: 'rooster', name: '닭띠', emoji: '🐔', fortune: '계획했던 일들이 착착 진행됩니다.', advice: '성실함이 최고의 무기가 입니다.', luckyColor: '은색', luckyNumber: 10, luckyDirection: '서쪽', luckyMissions: ["알람 변경", "5분 일찍 가기"] },
             { id: 'dog', name: '개띠', emoji: '🐶', fortune: '충실한 노력에 대한 보상이 따릅니다.', advice: '의리가 깊은 인상을 줍니다.', luckyColor: '갈색', luckyNumber: 5, luckyDirection: '서북쪽', luckyMissions: ["반려동물 영상", "신발 정리"] },
             { id: 'pig', name: '돼지띠', emoji: '🐷', fortune: '재물운이 상승하는 하루입니다.', advice: '베푸는 기쁨을 느껴보세요.', luckyColor: '검정색', luckyNumber: 6, luckyDirection: '북서쪽', luckyMissions: ["동전 넣기", "스스로 칭찬"] }
         ];
+
+        const foodMap = {
+            'happy': { 'Clear': [{ food: '디저트 카페', reason: '맑은 날씨엔 달콤한 디저트가 최고죠!' }], 'default': [{ food: '파스타', reason: '기분 좋은 날 맛있는 파스타 어때요?' }] },
+            'excited': { 'default': [{ food: '피자', reason: '신나는 기분을 한 입 가득!' }] },
+            'tired': { 'default': [{ food: '삼계탕', reason: '지친 몸에 기운을 불어넣으세요.' }] },
+            'sad': { 'Rain': [{ food: '해물파전', reason: '비 오는 날엔 역시 파전이죠.' }], 'default': [{ food: '매운 떡볶이', reason: '화끈한 맛으로 기분 전환!' }] },
+            'default': { 'default': [{ food: '비빔밥', reason: '영양 가득한 한 끼!' }] }
+        };
 
         const Header = () => (
             <header className="header-section">
@@ -469,12 +515,30 @@
         const BirthInput = ({ onCalculate }) => {
             const [calendarType, setCalendarType] = useState('solar');
             const [year, setYear] = useState('');
-            const handleSubmit = (e) => { e.preventDefault(); if(!year) return alert('연도를 입력해주세요.'); onCalculate(year); };
+            const [month, setMonth] = useState('1');
+            const [day, setDay] = useState('1');
+            const handleSubmit = (e) => { 
+                e.preventDefault(); 
+                if(!year) return alert('연도를 입력해주세요.'); 
+                onCalculate(year, month, day, calendarType); 
+            };
             return (
                 <section className="birth-container">
-                    <h2 className="birth-title">생년월일을 입력하세요</h2>
+                    <h2 className="birth-title">사주 정보를 입력하세요</h2>
                     <form onSubmit={handleSubmit} className="birth-form">
-                        <input type="number" placeholder="YYYY" value={year} onChange={e => setYear(e.target.value)} className="input-field year-input" />
+                        <div className="calendar-toggle">
+                            <button type="button" className={`toggle-btn ${calendarType === 'solar' ? 'active' : ''}`} onClick={() => setCalendarType('solar')}>양력</button>
+                            <button type="button" className={`toggle-btn ${calendarType === 'lunar' ? 'active' : ''}`} onClick={() => setCalendarType('lunar')}>음력</button>
+                        </div>
+                        <div className="date-inputs">
+                            <input type="number" placeholder="YYYY" value={year} onChange={e => setYear(e.target.value)} className="input-field year-input" />
+                            <select value={month} onChange={e => setMonth(e.target.value)} className="input-field select-input">
+                                {Array.from({length:12}, (_, i) => i+1).map(m => <option key={m} value={m}>{m}월</option>)}
+                            </select>
+                            <select value={day} onChange={e => setDay(e.target.value)} className="input-field select-input">
+                                {Array.from({length:31}, (_, i) => i+1).map(d => <option key={d} value={d}>{d}일</option>)}
+                            </select>
+                        </div>
                         <button type="submit" className="submit-button">운세 보기</button>
                     </form>
                 </section>
@@ -533,9 +597,50 @@
             );
         };
 
+        const MoodTracker = () => {
+            const [selectedId, setSelectedId] = useState(null);
+            const [recommendation, setRecommendation] = useState(null);
+            const moodsList = [
+                { id: 'happy', icon: <Smile />, label: '행복', color: '#f59e0b' },
+                { id: 'excited', icon: <Star />, label: '신남', color: '#ef4444' },
+                { id: 'tired', icon: <Moon />, label: '피곤', color: '#64748b' },
+                { id: 'sad', icon: <Frown />, label: '슬픔', color: '#3b82f6' }
+            ];
+            const handleMoodClick = (id) => {
+                setSelectedId(id);
+                const options = (foodMap[id] || foodMap['default'])['default'];
+                setRecommendation(options[Math.floor(Math.random() * options.length)]);
+            };
+            return (
+                <div className="mood-container">
+                    <h2 style={{ color: '#d4af37', marginBottom: '1.5rem' }}>오늘의 기분은 어떠신가요?</h2>
+                    <div className="mood-selector">
+                        {moodsList.map(m => (
+                            <div key={m.id} className={`mood-chip ${selectedId === m.id ? 'selected' : ''}`} onClick={() => handleMoodClick(m.id)} style={{ color: m.color }}>
+                                {m.icon}
+                                <span style={{ fontSize: '0.8rem', fontWeight: 700 }}>{m.label}</span>
+                            </div>
+                        ))}
+                    </div>
+                    {recommendation && (
+                        <div className="recommendation-box">
+                            <div style={{ color: '#d4af37', fontWeight: 700 }}><Utensils size={18} /> 추천 메뉴</div>
+                            <div className="recommend-food">{recommendation.food}</div>
+                            <div style={{ color: '#aaa', fontSize: '0.9rem' }}>{recommendation.reason}</div>
+                            <a href={`https://map.naver.com/v5/search/${encodeURIComponent(recommendation.food)}`} target="_blank" className="store-search-btn"><Search size={14} /> 맛집 찾기</a>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
         const App = () => {
             const [page, setPage] = useState('fortune');
             const [selected, setSelected] = useState(null);
+            useEffect(() => {
+                if(page === 'mood') document.body.classList.add('mood-mode');
+                else document.body.classList.remove('mood-mode');
+            }, [page]);
             const calculateZodiac = (y) => {
                 const map = { 0:'monkey', 1:'rooster', 2:'dog', 3:'pig', 4:'rat', 5:'ox', 6:'tiger', 7:'rabbit', 8:'dragon', 9:'snake', 10:'horse', 11:'sheep' };
                 return map[y % 12];
@@ -544,17 +649,20 @@
                 <>
                     <nav className="nav-bar">
                         <div className={`nav-item ${page === 'fortune' ? 'active' : ''}`} onClick={() => setPage('fortune')}>운수대통</div>
+                        <div className={`nav-item ${page === 'mood' ? 'active' : ''}`} onClick={() => setPage('mood')}>오늘은 이거지</div>
                         <div className={`nav-item ${page === 'cookie' ? 'active' : ''}`} onClick={() => setPage('cookie')}>포춘쿠키</div>
                     </nav>
-                    <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        {page === 'fortune' ? (
+                    <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '3rem' }}>
+                        {page === 'fortune' && (
                             <>
                                 <Header />
                                 <BirthInput onCalculate={y => setSelected(zodiacData.find(d => d.id === calculateZodiac(y)))} />
                                 <ZodiacGrid onSelect={id => setSelected(zodiacData.find(d => d.id === id))} selectedId={selected?.id} />
                                 <FortuneCard fortune={selected} />
                             </>
-                        ) : <FortuneCookie />}
+                        )}
+                        {page === 'mood' && <MoodTracker />}
+                        {page === 'cookie' && <FortuneCookie />}
                     </main>
                     <footer style={{ padding: '2rem', color: '#666', textAlign: 'center' }}>© 2026 운수대통</footer>
                 </>
