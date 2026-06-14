@@ -1,1 +1,242 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>운수대통</title><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet"><script src="https://unpkg.com/react@18/umd/react.production.min.js"></script><script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script><script src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://unpkg.com/lucide-react@0.473.0/dist/umd/lucide-react.min.js"></script><style>:root{--gold:#d4af37;--crimson:#8b0000;--dark:#1a1a1a;--paper:#f9f4e8}*{margin:0;padding:0;box-sizing:border-box}body{background-color:var(--dark);color:#eee;font-family:'Noto Serif KR',serif;min-height:100vh}body.mood-mode{background:#f0f9ff;color:#334155}.nav{position:sticky;top:0;background:rgba(26,26,26,.95);display:flex;justify-content:center;gap:1rem;padding:1rem;border-bottom:1px solid rgba(212,175,55,.3);z-index:1000}.nav-item{color:#aaa;padding:.5rem 1rem;border-radius:20px;cursor:pointer;font-size:.9rem}.nav-item.active{color:var(--gold);background:rgba(212,175,55,.1)}.card{background:var(--paper);border:4px double var(--gold);padding:2rem;color:var(--dark);text-align:center;width:100%;max-width:600px;margin-top:2rem}.box{width:100%;max-width:600px;padding:1.5rem;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(212,175,55,.3);margin-bottom:2rem;text-align:center}.input{background:var(--dark);border:1px solid #444;color:#white;padding:.8rem;border-radius:4px;width:100%}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;width:100%;max-width:600px}.btn{background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.2);padding:1rem .5rem;border-radius:8px;color:#fff;display:flex;flex-direction:column;align-items:center;gap:.5rem}.btn.sel{background:var(--crimson);border-color:var(--gold)}.toggle{display:flex;background:rgba(255,255,255,.1);border-radius:6px;padding:4px;margin-bottom:1rem}.t-btn{flex:1;padding:.4rem;color:#aaa;font-size:.8rem;border-radius:4px;cursor:pointer}.t-btn.active{background:var(--gold);color:var(--dark);font-weight:700}.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}.chip{background:rgba(255,255,255,.6);padding:1rem .5rem;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:.5rem;cursor:pointer}.chip.sel{background:#fff;border:2px solid currentColor}</style></head><body><div id="root"></div><script type="text/babel">const {useState,useEffect,useMemo}=React;const Icons=window.LucideReact||{};const {Sparkles=()=>null,Quote=()=>null,Utensils=()=>null,Search=()=>null,RefreshCw=()=>null}=Icons;const zodiacs=[{id:'rat',name:'쥐띠',emoji:'🐭',f:'기쁜 하루입니다.',a:'배려하세요.',m:['파란 펜 쓰기']},{id:'ox',name:'소띠',emoji:'🐮',f:'결실을 맺습니다.',a:'서두르지 마세요.',m:['물 마시기']},{id:'tiger',name:'호랑이띠',emoji:'🐯',f:'새로운 도전!',a:'자신감을!',m:['기지개 켜기']},{id:'rabbit',name:'토끼띠',emoji:'🐰',f:'평온한 하루.',a:'따뜻하게.',m:['칭찬하기']},{id:'dragon',name:'용띠',emoji:'🐲',f:'에너지 뿜뿜!',a:'욕심 조절.',m:['계단 걷기']},{id:'snake',name:'뱀띠',emoji:'🐍',f:'직관이 예리함.',a:'분석하세요.',m:['정리정돈']},{id:'horse',name:'말띠',emoji:'🐴',f:'활동적인 날.',a:'휴식 필요.',m:['환기하기']},{id:'sheep',name:'양띠',emoji:'🐑',f:'대화가 술술.',a:'양보하세요.',m:['안부 묻기']},{id:'monkey',name:'원숭이띠',emoji:'🐵',f:'즐거운 하루.',a:'진중하게.',m:['농담 하기']},{id:'rooster',name:'닭띠',emoji:'🐔',f:'순조로운 날.',a:'신뢰 유지.',m:['일찍 가기']},{id:'dog',name:'개띠',emoji:'🐶',f:'보람찬 하루.',a:'의리 지킴.',m:['신발 정리']},{id:'pig',name:'돼지띠',emoji:'🐷',f:'풍요로운 날.',a:'베푸세요.',m:['동전 저금']}];const foods={'happy':[{f:'스테이크',r:'행복한 식사!'}],'excited':[{f:'치킨',r:'신나는 기분!'}],'tired':[{f:'삼계탕',r:'보양식 추천'}],'sad':[{f:'떡볶이',r:'매운맛 위로'}],'default':[{f:'비빔밥',r:'든든한 한 끼'}]};const App=()=>{const [p,setP]=useState('f');const [s,setS]=useState(null);const [c,setC]=useState('s');const [w,setW]=useState({city:'서울',cond:'Clear',temp:'20'});useEffect(()=>{if(p==='m'){document.body.classList.add('mood-mode');fetch('https://wttr.in/?format=j1').then(r=>r.json()).then(d=>setW({city:d.nearest_area[0].areaName[0].value,cond:d.current_condition[0].weatherDesc[0].value,temp:d.current_condition[0].temp_C})).catch(()=>{});}else document.body.classList.remove('mood-mode')},[p]);const calc=(y)=>zodiacs[Number(y)%12===4?0:(Number(y)%12===5?1:0)];const getZ=(y)=>{const map={0:'monkey',1:'rooster',2:'dog',3:'pig',4:'rat',5:'ox',6:'tiger',7:'rabbit',8:'dragon',9:'snake',10:'horse',11:'sheep'};return zodiacs.find(d=>d.id===map[Number(y)%12]);};return(<><nav className="nav"><div className={`nav-item ${p==='f'?'active':''}`} onClick={()=>setP('f')}>운수대통</div><div className={`nav-item ${p==='m'?'active':''}`} onClick={()=>setP('m')}>오늘은 이거지</div><div className={`nav-item ${p==='c'?'active':''}`} onClick={()=>setP('c')}>포춘쿠키</div></nav><main style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center',padding:'2rem 1rem'}}>{p==='f'&&(<> <div className="box"><h2>사주 정보 (음력/양력)</h2><div className="toggle"><div className={`t-btn ${c==='s'?'active':''}`} onClick={()=>setC('s')}>양력</div><div className={`t-btn ${c==='l'?'active':''}`} onClick={()=>setC('l')}>음력</div></div><input type="number" placeholder="YYYY" id="by" className="input" style={{color:'#000'}}/><button className="submit-button" style={{width:'100%',background:'#8b0000',color:'#d4af37',padding:'1rem',marginTop:'1rem',borderRadius:'4px'}} onClick={()=>{const y=document.getElementById('by').value;if(y)setS(getZ(y))}}>운세 보기</button></div><div className="grid">{zodiacs.map(z=>(<button key={z.id} className={`btn ${s?.id===z.id?'sel':''}`} onClick={()=>setS(z)}><span style={{fontSize:'2rem'}}>{z.emoji}</span><span style={{fontSize:'.8rem'}}>{z.name}</span></button>))}</div>{s&&<div className="card"><div style={{fontSize:'4rem'}}>{s.emoji}</div><h2>{s.name} 운세</h2><p style={{fontSize:'1.2rem',margin:'1rem 0'}}>{s.f}</p><div className="mission-box"><div style={{fontWeight:700,color:'#8b0000'}}><Sparkles size={16}/> 행운 미션</div><p>{s.m[0]}</p></div><p style={{opacity:.8}}>{s.a}</p></div></>)}{p==='m'&&<MoodView w={w}/>}{p==='c'&&<CookieView/>}</main><footer style={{padding:'2rem',color:'#666'}}>© 2026 운수대통</footer></>)};const MoodView=({w})=>{const [sl,setSl]=useState(null);const [rc,setRc]=useState(null);const list=[{id:'happy',i:'😊',l:'행복',c:'#f59e0b'},{id:'excited',i:'🎉',l:'신남',c:'#ef4444'},{id:'tired',i:'😴',l:'피곤',c:'#64748b'},{id:'sad',i:'😢',l:'슬픔',c:'#3b82f6'}];return(<div className="box" style={{background:'rgba(255,255,255,.1)',color:'#333'}}><h1 style={{marginBottom:'1rem'}}>오늘은 이거지</h1><p>{w.city} | {w.cond}, {w.temp}°C</p><div className="mood-grid" style={{marginTop:'1.5rem'}}>{list.map(m=>(<div key={m.id} className={`chip ${sl===m.id?'sel':''}`} onClick={()=>{setSl(m.id);setRc((foods[m.id]||foods['default'])[0])}} style={{color:m.c}}><span>{m.i}</span><strong>{m.l}</strong></div>))}</div>{rc&&<div className="recommend-box"><h3>추천: {rc.f}</h3><p>{rc.r}</p><a href={`https://map.naver.com/v5/search/${encodeURIComponent(rc.f)}`} target="_blank" className="store-search-btn">맛집 찾기</a></div>}</div>)};const CookieView=()=>{const [o,setO]=useState(false);const msgs=["행운이 옵니다.","당신은 최고!","힘내세요.","곧 기쁜 소식이!"];const m=useMemo(()=>msgs[Math.floor(Math.random()*msgs.length)],[o]);return(<div style={{textAlign:'center',padding:'3rem'}}><h1 style={{color: '#d4af37'}}>포춘 쿠키</h1><div onClick={()=>setO(true)} style={{fontSize:'8rem',cursor:'pointer',margin:'2rem'}}>{!o?'🥠':<div style={{background:'#fff',padding:'2rem',borderRadius:'8px',fontSize:'1.2rem',color:'#000'}}>{m}</div>}</div>{o&&<button onClick={()=>setO(false)} style={{color:'#d4af37',border:'1px solid #d4af37',padding:'.5rem 1rem',borderRadius:'20px'}}>다시 하기</button>}</div>)};ReactDOM.createRoot(document.getElementById('root')).render(<App/>);</script></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운수대통 (運數大通)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@0.473.0/dist/umd/lucide-react.min.js"></script>
+    <style>
+        :root {
+            --color-gold: #d4af37;
+            --color-crimson: #8b0000;
+            --color-ink: #1a1a1a;
+            --color-paper: #f9f4e8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--color-ink); 
+            color: #eee; 
+            font-family: 'Noto Serif KR', serif; 
+            min-height: 100vh;
+            background-image: radial-gradient(circle at center, #2a2a2a 0%, #1a1a1a 100%);
+            transition: background 0.5s ease;
+        }
+
+        body.mood-mode {
+            background-color: #f0f9ff;
+            background-image: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 50%, #fefce8 100%);
+            color: #334155;
+        }
+
+        .nav-bar {
+            position: sticky; top: 0; width: 100%;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex; justify-content: center; gap: 1rem; padding: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            z-index: 1000;
+        }
+        body.mood-mode .nav-bar { background: rgba(255, 255, 255, 0.8); border-bottom-color: rgba(15, 23, 42, 0.1); }
+        
+        .nav-item { color: #aaa; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; }
+        .nav-item.active { color: var(--color-gold); background: rgba(212, 175, 55, 0.1); }
+        body.mood-mode .nav-item { color: #64748b; }
+        body.mood-mode .nav-item.active { color: #0f172a; background: rgba(15, 23, 42, 0.05); }
+
+        .container { width: 100%; max-width: 600px; padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; }
+
+        .header-section { text-align: center; margin-bottom: 2rem; }
+        .header-title { color: var(--color-gold); font-size: 2.5rem; margin-bottom: 0.5rem; }
+        body.mood-mode .header-title { color: #0f172a; }
+
+        .card-box {
+            width: 100%; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;
+            text-align: center;
+        }
+        body.mood-mode .card-box { background: white; border-color: rgba(0,0,0,0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        .calendar-toggle { display: flex; background: rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 4px; margin-bottom: 1rem; }
+        .toggle-btn { flex: 1; padding: 0.4rem; color: #aaa; font-size: 0.8rem; border-radius: 4px; cursor: pointer; }
+        .toggle-btn.active { background: var(--color-gold); color: var(--color-ink); font-weight: 700; }
+
+        .input-group { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .input-field { background: var(--color-ink); border: 1px solid #444; color: white; padding: 0.8rem; border-radius: 4px; flex: 1; min-width: 0; }
+        
+        .submit-btn { background: var(--color-crimson); color: var(--color-gold); width: 100%; padding: 1rem; border-radius: 4px; font-weight: 700; border: 1px solid var(--color-gold); cursor: pointer; }
+
+        .zodiac-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; width: 100%; }
+        .zodiac-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 8px; padding: 1rem 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: #fff; cursor: pointer; transition: all 0.2s; }
+        .zodiac-btn.selected { background: var(--color-crimson); border-color: var(--color-gold); transform: scale(1.05); }
+
+        .fortune-result { background: var(--color-paper); color: var(--color-ink); border: 4px double var(--color-gold); padding: 2rem; width: 100%; margin-top: 2rem; text-align: center; border-radius: 4px; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+
+        .mission-box { background: #fff; border: 1px dashed var(--color-gold); padding: 1rem; margin: 1.5rem 0; border-radius: 8px; }
+        .elements-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1.5rem; border-top: 1px solid #ddd; padding-top: 1rem; }
+        .element-item { display: flex; flex-direction: column; font-size: 0.8rem; }
+
+        .mood-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-top: 1rem; }
+        .mood-chip { background: rgba(255, 255, 255, 0.6); padding: 1rem 0.5rem; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .mood-chip.selected { background: white; border: 2px solid currentColor; transform: scale(1.05); }
+
+        .recommend-box { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--color-gold); border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem; }
+        .store-btn { background: var(--color-gold); color: white; padding: 0.6rem 1rem; border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; font-weight: 700; }
+
+        @media (max-width: 600px) { .zodiac-grid { grid-template-columns: repeat(3, 1fr); } .elements-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+        const Icons = window.LucideReact || {};
+        const { Sparkles = () => null, Quote = () => null, Utensils = () => null, Search = () => null, RefreshCw = () => null, Palette = () => null, Hash = () => null, Compass = () => null } = Icons;
+
+        const zodiacData = [
+            { id: 'rat', name: '쥐띠', emoji: '🐭', fortune: '소박한 기쁨이 큰 행복으로 이어지는 날입니다.', advice: '주변을 배려하는 마음이 행운을 부릅니다.', missions: ["파란색 펜 사용하기", "먼저 인사하기"], color: '하얀색', num: 1, dir: '북쪽' },
+            { id: 'ox', name: '소띠', emoji: '🐮', fortune: '꾸준한 노력이 빛을 발하는 보람찬 하루입니다.', advice: '서두르지 말고 차근차근 진행하세요.', missions: ["5초간 웃기", "물 한 잔 마시기"], color: '노란색', num: 5, dir: '북동쪽' },
+            { id: 'tiger', name: '호랑이띠', emoji: '🐯', fortune: '새로운 도전에 나서기에 아주 좋은 시기입니다.', advice: '자신감을 가지고 리더십을 발휘하세요.', missions: ["기지개 켜기", "음악 듣기"], color: '초록색', num: 3, dir: '동쪽' },
+            { id: 'rabbit', name: '토끼띠', emoji: '🐰', fortune: '마음이 평온해지고 대인관계가 원만해집니다.', advice: '주변을 따뜻하게 보살펴보세요.', missions: ["칭찬 한 마디", "식물 물 주기"], color: '연두색', num: 4, dir: '동쪽' },
+            { id: 'dragon', name: '용띠', emoji: '🐲', fortune: '강력한 에너지가 주변에 긍정적인 영향을 줍니다.', advice: '욕심을 버리면 더 큰 것을 얻습니다.', missions: ["계단 이용하기", "할 일 적기"], color: '청색', num: 5, dir: '동남쪽' },
+            { id: 'snake', name: '뱀띠', emoji: '🐍', fortune: '예리한 직관력이 중요한 결정을 돕는 날입니다.', advice: '차분하게 정보를 분석하는 것이 좋습니다.', missions: ["심호흡 3번", "정리정돈"], color: '보라색', num: 2, dir: '남동쪽' },
+            { id: 'horse', name: '말띠', emoji: '🐴', fortune: '활동량이 늘어나고 시원한 기운이 감도는 날입니다.', advice: '열정을 불태우되 휴식도 잊지 마세요.', missions: ["창문 열기", "10분 산책"], color: '빨간색', num: 7, dir: '남쪽' },
+            { id: 'sheep', name: '양띠', emoji: '🐑', fortune: '온화하고 부드러운 대화가 이득을 가져옵니다.', advice: '양보하는 미덕이 큰 복이 되어 돌아옵니다.', missions: ["안부 전하기", "차 마시기"], color: '베이지색', num: 8, dir: '남서쪽' },
+            { id: 'monkey', name: '원숭이띠', emoji: '🐵', fortune: '재치와 유머가 넘치는 즐거운 하루가 예상됩니다.', advice: '진중함도 함께 갖춘다면 금상첨화입니다.', missions: ["농담 하기", "퍼즐 풀기"], color: '금색', num: 9, dir: '서남쪽' },
+            { id: 'rooster', name: '닭띠', emoji: '🐔', fortune: '계획했던 일들이 순조롭게 진행되는 날입니다.', advice: '정확한 시간 엄수가 신뢰를 높여줍니다.', missions: ["5분 일찍 가기", "감사 일기"], color: '은색', num: 10, dir: '서쪽' },
+            { id: 'dog', name: '개띠', emoji: '🐶', fortune: '충실한 노력 끝에 뜻밖의 보상이 따릅니다.', advice: '의리와 신의를 지키는 모습이 아름답습니다.', missions: ["신발 정돈", "친구 응원"], color: '갈색', num: 5, dir: '서북쪽' },
+            { id: 'pig', name: '돼지띠', emoji: '🐷', fortune: '재물운이 상승하고 마음이 풍요로운 날입니다.', advice: '베푸는 즐거움을 느껴보는 것이 좋겠습니다.', missions: ["동전 저금", "셀프 칭찬"], color: '검정색', num: 6, dir: '북서쪽' }
+        ];
+
+        const foodMap = {
+            'happy': [{f:'스테이크', r:'기분 좋은 날 최고의 만찬!'}, {f:'파스타', r:'부드러운 면 요리가 어울려요'}],
+            'excited': [{f:'치킨', r:'신나는 날엔 역시 치킨!'}, {f:'피자', r:'즐거운 파티 분위기'}],
+            'tired': [{f:'삼계탕', r:'지친 몸을 위한 보양식'}, {f:'커피', r:'에너지가 필요할 때'}],
+            'sad': [{f:'떡볶이', r:'매운맛으로 스트레스 타파!'}, {f:'초콜릿', r:'달콤한 위로가 필요해요'}],
+            'peaceful': [{f:'비빔밥', r:'정갈하고 건강한 한 끼'}, {f:'따뜻한 차', r:'여유를 즐기는 시간'}],
+            'thinking': [{f:'초밥', r:'깔끔하게 집중하기 좋은 음식'}]
+        };
+
+        const App = () => {
+            const [p, setP] = useState('f');
+            const [s, setS] = useState(null);
+            const [c, setC] = useState('s');
+            const [w, setW] = useState({ city: '서울', cond: 'Clear', temp: '20' });
+
+            useEffect(() => {
+                if(p === 'm') {
+                    document.body.classList.add('mood-mode');
+                    fetch('https://wttr.in/?format=j1').then(r => r.json()).then(d => {
+                        setW({ city: d.nearest_area[0].areaName[0].value, cond: d.current_condition[0].weatherDesc[0].value, temp: d.current_condition[0].temp_C });
+                    }).catch(() => {});
+                } else document.body.classList.remove('mood-mode');
+            }, [p]);
+
+            const getZ = (y) => {
+                const map = { 0:'monkey', 1:'rooster', 2:'dog', 3:'pig', 4:'rat', 5:'ox', 6:'tiger', 7:'rabbit', 8:'dragon', 9:'snake', 10:'horse', 11:'sheep' };
+                return zodiacData.find(d => d.id === map[Number(y) % 12]);
+            };
+
+            return (
+                <>
+                    <nav className="nav-bar">
+                        <div className={`nav-item ${p==='f'?'active':''}`} onClick={()=>setP('f')}>운수대통</div>
+                        <div className={`nav-item ${p==='m'?'active':''}`} onClick={()=>setP('m')}>오늘은 이거지</div>
+                        <div className={`nav-item ${p==='c'?'active':''}`} onClick={()=>setP('c')}>포춘쿠키</div>
+                    </nav>
+
+                    <main style={{width:'100%', display:'flex', flexDirection:'column', alignItems:'center'}}>
+                        <div className="container">
+                            {p === 'f' && (
+                                <>
+                                    <div className="header-section"><h1 className="header-title">운수대통</h1><p>오늘의 운세를 확인하세요</p></div>
+                                    <div className="card-box">
+                                        <h2 style={{color:'var(--color-gold)', marginBottom:'1rem'}}>사주 정보 입력</h2>
+                                        <div className="calendar-toggle">
+                                            <div className={`toggle-btn ${c==='s'?'active':''}`} onClick={()=>setC('s')}>양력</div>
+                                            <div className={`toggle-btn ${c==='l'?'active':''}`} onClick={()=>setC('l')}>음력</div>
+                                        </div>
+                                        <div className="input-group">
+                                            <input type="number" id="by" placeholder="YYYY" className="input-field" />
+                                            <select className="input-field">{Array.from({length:12},(_,i)=>i+1).map(m=><option key={m}>{m}월</option>)}</select>
+                                            <select className="input-field">{Array.from({length:31},(_,i)=>i+1).map(d=><option key={d}>{d}일</option>)}</select>
+                                        </div>
+                                        <button className="submit-btn" onClick={()=>{const y=document.getElementById('by').value; if(y)setS(getZ(y))}}>운세 보기</button>
+                                    </div>
+                                    <div className="zodiac-grid">{zodiacData.map(z=>(<div key={z.id} className={`zodiac-btn ${s?.id===z.id?'selected':''}`} onClick={()=>setS(z)}><span>{z.emoji}</span><span style={{fontSize:'0.7rem'}}>{z.name}</span></div>))}</div>
+                                    {s && (
+                                        <div className="fortune-result">
+                                            <div style={{fontSize:'3rem'}}>{s.emoji}</div>
+                                            <h2>{s.name} 오늘의 운세</h2>
+                                            <p style={{margin:'1rem 0', fontSize:'1.1rem'}}>{s.fortune}</p>
+                                            <div className="mission-box"><div style={{fontWeight:700, color:'var(--color-crimson)'}}><Sparkles size={16}/> 오늘의 행운 미션</div><p>{s.missions[0]}</p></div>
+                                            <div style={{textAlign:'left', background:'rgba(0,0,0,0.05)', padding:'1rem', borderRadius:'8px'}}><Quote size={14}/> <p style={{display:'inline', fontSize:'0.9rem'}}>{s.advice}</p></div>
+                                            <div className="elements-grid">
+                                                <div className="element-item"><Palette size={16}/><span>색상: {s.color}</span></div>
+                                                <div className="element-item"><Hash size={16}/><span>숫자: {s.num}</span></div>
+                                                <div className="element-item"><Compass size={16}/><span>방위: {s.dir}</span></div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                            {p === 'm' && <MoodView w={w} />}
+                            {p === 'c' && <CookieView />}
+                        </div>
+                    </main>
+                    <footer style={{padding:'2rem', textAlign:'center', color:'#666', fontSize:'0.8rem'}}>© 2026 운수대통</footer>
+                </>
+            );
+        };
+
+        const MoodView = ({w}) => {
+            const [sel, setSel] = useState(null);
+            const [rec, setRec] = useState(null);
+            const moods = [
+                {id:'happy', i:'😊', l:'행복', c:'#f59e0b'}, {id:'excited', i:'🎉', l:'신남', c:'#ef4444'},
+                {id:'tired', i:'😴', l:'피곤', c:'#64748b'}, {id:'sad', i:'😢', l:'슬픔', c:'#3b82f6'},
+                {id:'peaceful', i:'🌿', l:'평온', c:'#10b981'}, {id:'thinking', i:'🤔', l:'고민', c:'#8b5cf6'}
+            ];
+            return (
+                <div className="card-box" style={{background:'rgba(255,255,255,0.1)', color:'#333'}}>
+                    <h1 className="header-title">오늘은 이거지</h1>
+                    <p style={{fontSize:'0.8rem', color:'#666'}}>{w.city} | {w.cond}, {w.temp}°C</p>
+                    <div className="mood-grid">
+                        {moods.map(m=>(<div key={m.id} className={`mood-chip ${sel===m.id?'selected':''}`} onClick={()=>{setSel(m.id); const opts=foodMap[m.id]||foodMap['happy']; setRec(opts[Math.floor(Math.random()*opts.length)])}} style={{color:m.c}}><span>{m.i}</span><strong>{m.l}</strong></div>))}
+                    </div>
+                    {rec && (
+                        <div className="recommend-box">
+                            <div style={{fontWeight:700, color:'var(--color-gold)'}}><Utensils size={18}/> 추천 메뉴</div>
+                            <div style={{fontSize:'1.5rem', fontWeight:700, margin:'0.5rem 0'}}>{rec.f}</div>
+                            <p style={{fontSize:'0.9rem', color:'#777'}}>{rec.r}</p>
+                            <a href={`https://map.naver.com/v5/search/${encodeURIComponent(rec.f)}`} target="_blank" className="store-btn"><Search size={14}/> 맛집 찾기</a>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const CookieView = () => {
+            const [o, setO] = useState(false);
+            const msgs = ["행운이 당신에게 가고 있습니다.", "작은 선행이 큰 복이 됩니다.", "당신은 충분히 잘하고 있습니다.", "곧 기쁜 소식이 들릴 거예요.", "오늘의 주인공은 당신입니다."];
+            const m = useMemo(() => msgs[Math.floor(Math.random()*msgs.length)], [o]);
+            return (
+                <div style={{textAlign:'center', padding:'2rem 0'}}>
+                    <h1 className="header-title">포춘 쿠키</h1>
+                    <div onClick={()=>setO(true)} style={{fontSize:'8rem', cursor:'pointer', margin:'2rem 0', userSelect:'none'}}>{!o?'🥠':<div style={{background:'#fff', padding:'2rem', borderRadius:'8px', fontSize:'1.2rem', color:'#1a1a1a', borderLeft:'5px solid var(--color-crimson)', fontWeight:700}}>{m}</div>}</div>
+                    {o && <button onClick={()=>setO(false)} className="nav-item active" style={{border:'1px solid var(--color-gold)'}}>다시 하기</button>}
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
