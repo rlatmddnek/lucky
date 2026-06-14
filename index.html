@@ -1,15 +1,568 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>운수대통 (運數大通)</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
+    <!-- React & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.473.0/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@0.473.0/dist/umd/lucide-react.min.js"></script>
+    <style>
+        :root {
+            --color-gold: #d4af37;
+            --color-gold-dark: #aa841e;
+            --color-crimson: #8b0000;
+            --color-ink-black: #1a1a1a;
+            --color-paper: #f9f4e8;
+            --color-text: #333333;
+            --font-main: 'Noto Serif KR', serif;
+            --shadow-traditional: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --border-traditional: 2px solid var(--color-gold);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-ink-black);
+            color: var(--color-text);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at center, #2a2a2a 0%, #1a1a1a 100%);
+            transition: background 0.5s ease;
+        }
+
+        body.mood-mode {
+            background-color: #f0f9ff;
+            background-image: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 50%, #fefce8 100%);
+            color: #334155;
+        }
+
+        body.mood-mode .header-title { color: #0f172a; text-shadow: none; }
+        body.mood-mode .header-subtitle { color: #64748b; }
+
+        #root {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            z-index: 1000;
+        }
+        .nav-item {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: var(--color-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .header-section {
+            padding: 3rem 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+        .header-title {
+            color: var(--color-gold);
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .header-subtitle {
+            color: #ccc;
+            font-size: 1.1rem;
+            letter-spacing: 0.1rem;
+        }
+        .header-ornament {
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+        }
+
+        .birth-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 2rem;
+        }
+        .birth-title {
+            color: var(--color-gold);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        .birth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .input-label {
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .date-inputs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .input-field {
+            background: var(--color-ink-black);
+            border: 1px solid #444;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 4px;
+        }
+        .year-input { flex: 2; }
+        .select-input { flex: 1; cursor: pointer; }
+        .full-select { width: 100%; }
+        
+        .calendar-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 4px;
+            margin-bottom: 1rem;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            background: none;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .toggle-btn.active {
+            background: var(--color-gold);
+            color: var(--color-ink-black);
+            font-weight: 700;
+        }
+
+        .submit-button {
+            background: var(--color-crimson);
+            color: var(--color-gold);
+            border: 1px solid var(--color-gold);
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .submit-button:hover {
+            background: var(--color-gold);
+            color: var(--color-crimson);
+        }
+
+        .zodiac-grid-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        .zodiac-grid-title {
+            color: var(--color-gold);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .zodiac-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 1.5rem 0.5rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        .zodiac-button:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--color-gold);
+        }
+        .zodiac-button.selected {
+            background: var(--color-crimson);
+            border-color: var(--color-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .zodiac-emoji {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+        .zodiac-name {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .card-wrapper {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fortune-card {
+            background-color: var(--color-paper);
+            border: 4px double var(--color-gold);
+            padding: 3rem 2rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: var(--color-ink-black);
+            text-align: center;
+        }
+        .card-emoji {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-name {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-gold-dark);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .main-fortune {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        .mission-box {
+            background: #fff;
+            border: 1px dashed var(--color-gold);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+        .mission-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--color-crimson);
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+        .mission-text {
+            font-size: 1.1rem;
+            color: var(--color-ink-black);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .mission-note {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .advice-box {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            text-align: left;
+        }
+        .lucky-elements {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .lucky-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .lucky-label { font-size: 0.75rem; color: #666; }
+        .lucky-value { font-weight: 700; color: var(--color-crimson); }
+
+        .mood-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .mood-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        .mood-chip {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 1rem 0.5rem;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .mood-chip.selected {
+            background: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: scale(1.1);
+        }
+
+        .lotto-container {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px dashed var(--color-gold-dark);
+        }
+        .lotto-numbers {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .lotto-ball {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        .ball-0 { background-color: #fbc400; }
+        .ball-1 { background-color: #69c8f2; }
+        .ball-2 { background-color: #ff7272; }
+        .ball-3 { background-color: #aaa; }
+        .ball-4 { background-color: #b0d840; }
+
+        .refresh-btn {
+            background: none;
+            border: 1px solid var(--color-gold-dark);
+            color: var(--color-gold-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .zodiac-grid { grid-template-columns: repeat(3, 1fr); }
+            .lucky-elements { grid-template-columns: 1fr; }
+            .mood-selector { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
     <div id="root"></div>
-    <script type="module" src="./src/main.tsx"></script>
-  </body>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+        const LucideIcons = window.LucideReact || window.lucide || {};
+        const { 
+            Calendar, Clock, Palette, Hash, Compass, Quote, Sparkles, RefreshCw,
+            MapPin, Utensils, Smile, Star, Music, Glasses, Heart, Brain, Moon, Zap, 
+            Frown, CloudLightning, Thermometer, Flame, Search, ExternalLink
+        } = LucideIcons;
+
+        const fortuneCookieMessages = [
+            "오늘 당신에게 행운이 찾아올 거예요.", "작은 기쁨이 큰 행복으로 이어집니다.", "당신의 노력이 곧 결실을 맺을 것입니다.",
+            "새로운 인연이 기다리고 있습니다.", "자신을 믿으세요. 당신은 충분히 잘하고 있습니다.", "뜻밖의 소식이 기쁨을 가져다줄 것입니다.",
+            "포기하지 마세요. 성공이 코앞에 있습니다.", "오늘은 웃음이 끊이지 않는 하루가 될 거예요.", "가장 밝은 별은 당신 안에 있습니다.",
+            "모든 일이 순조롭게 풀릴 것입니다.", "지금 하는 고민은 곧 해결될 문제입니다.", "소중한 사람에게 연락 한 통 해보세요.",
+            "당신의 미소가 주변을 밝게 만듭니다.", "오늘은 평소보다 조금 더 과감해져도 좋습니다.", "하늘을 한 번 올려다보세요. 마음이 편안해질 거예요.",
+            "작은 선행이 큰 복이 되어 돌아옵니다.", "오늘은 당신이 주인공인 날입니다.", "천천히 가도 괜찮습니다. 방향이 중요하니까요.",
+            "원하는 것을 향해 한 걸음 더 나아가세요.", "당신은 생각보다 훨씬 더 강한 사람입니다."
+        ];
+
+        const zodiacData = [
+            { id: 'rat', name: '쥐띠', emoji: '🐭', fortune: '오늘은 작은 일에도 기쁨을 느끼게 될 것입니다.', advice: '성급한 판단보다는 한 발 물러서세요.', luckyColor: '하얀색', luckyNumber: 1, luckyDirection: '북쪽', luckyMissions: ["파란색 필기구 사용하기", "먼저 인사하기"] },
+            { id: 'ox', name: '소띠', emoji: '🐮', fortune: '꾸준한 노력이 결실을 맺는 하루입니다.', advice: '주위의 조언을 귀담아드세요.', luckyColor: '노란색', luckyNumber: 5, luckyDirection: '북동쪽', luckyMissions: ["5초간 웃기", "물 한 잔 마시기"] },
+            { id: 'tiger', name: '호랑이띠', emoji: '🐯', fortune: '활기가 넘치는 하루입니다.', advice: '자신감을 가지되 독단은 삼가세요.', luckyColor: '초록색', luckyNumber: 3, luckyDirection: '동쪽', luckyMissions: ["기지개 켜기", "신곡 듣기"] },
+            { id: 'rabbit', name: '토끼띠', emoji: '🐰', fortune: '평화롭고 안정적인 하루입니다.', advice: '주변을 따뜻하게 보살피세요.', luckyColor: '연두색', luckyNumber: 4, luckyDirection: '동쪽', luckyMissions: ["식물 물 주기", "칭찬하기"] },
+            { id: 'dragon', name: '용띠', emoji: '🐲', fortune: '강한 에너지가 분출되는 날입니다.', advice: '욕심은 적절히 조절하세요.', luckyColor: '청색', luckyNumber: 5, luckyDirection: '동남쪽', luckyMissions: ["계단 오르기", "목록 작성"] },
+            { id: 'snake', name: '뱀띠', emoji: '🐍', fortune: '직관력이 예리해지는 날입니다.', advice: '냉철한 분석이 필요합니다.', luckyColor: '보라색', luckyNumber: 2, luckyDirection: '남동쪽', luckyMissions: ["심호흡 3번", "정리정돈"] },
+            { id: 'horse', name: '말띠', emoji: '🐴', fortune: '시원하게 뻗어 나가는 운세입니다.', advice: '열정을 불태우되 체력도 챙기세요.', luckyColor: '빨간색', luckyNumber: 7, luckyDirection: '남쪽', luckyMissions: ["환기하기", "산책 10분"] },
+            { id: 'sheep', name: '양띠', emoji: '🐑', fortune: '온화하고 부드러운 기운이 감돕니다.', advice: '양보하면 더 큰 복이 옵니다.', luckyColor: '베이지색', luckyNumber: 8, luckyDirection: '남서쪽', luckyMissions: ["안부 묻기", "차 마시기"] },
+            { id: 'monkey', name: '원숭이띠', emoji: '🐵', fortune: '재치가 번뜩이는 하루입니다.', advice: '지나친 장난은 오해를 부릅니다.', luckyColor: '금색', luckyNumber: 9, luckyDirection: '서남쪽', luckyMissions: ["농담 한 마디", "주변 정리"] },
+            { id: 'rooster', name: '닭띠', emoji: '🐔', fortune: '계획했던 일들이 착착 진행됩니다.', advice: '성실함이 최고의 무기입니다.', luckyColor: '은색', luckyNumber: 10, luckyDirection: '서쪽', luckyMissions: ["알람 변경", "5분 일찍 가기"] },
+            { id: 'dog', name: '개띠', emoji: '🐶', fortune: '충실한 노력에 대한 보상이 따릅니다.', advice: '의리가 깊은 인상을 줍니다.', luckyColor: '갈색', luckyNumber: 5, luckyDirection: '서북쪽', luckyMissions: ["반려동물 영상", "신발 정리"] },
+            { id: 'pig', name: '돼지띠', emoji: '🐷', fortune: '재물운이 상승하는 하루입니다.', advice: '베푸는 기쁨을 느껴보세요.', luckyColor: '검정색', luckyNumber: 6, luckyDirection: '북서쪽', luckyMissions: ["동전 넣기", "스스로 칭찬"] }
+        ];
+
+        const Header = () => (
+            <header className="header-section">
+                <div className="header-ornament"></div>
+                <h1 className="header-title">운수대통 (運數大通)</h1>
+                <p className="header-subtitle">오늘의 운세를 확인하고 행운을 잡으세요</p>
+                <div className="header-ornament"></div>
+            </header>
+        );
+
+        const BirthInput = ({ onCalculate }) => {
+            const [calendarType, setCalendarType] = useState('solar');
+            const [year, setYear] = useState('');
+            const handleSubmit = (e) => { e.preventDefault(); if(!year) return alert('연도를 입력해주세요.'); onCalculate(year); };
+            return (
+                <section className="birth-container">
+                    <h2 className="birth-title">생년월일을 입력하세요</h2>
+                    <form onSubmit={handleSubmit} className="birth-form">
+                        <input type="number" placeholder="YYYY" value={year} onChange={e => setYear(e.target.value)} className="input-field year-input" />
+                        <button type="submit" className="submit-button">운세 보기</button>
+                    </form>
+                </section>
+            );
+        };
+
+        const ZodiacGrid = ({ onSelect, selectedId }) => (
+            <div className="zodiac-grid-container">
+                <h2 className="zodiac-grid-title">띠를 직접 선택하세요</h2>
+                <div className="zodiac-grid">
+                    {zodiacData.map(item => (
+                        <button key={item.id} className={`zodiac-button ${selectedId === item.id ? 'selected' : ''}`} onClick={() => onSelect(item.id)}>
+                            <span className="zodiac-emoji">{item.emoji}</span>
+                            <span className="zodiac-name">{item.name}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        );
+
+        const FortuneCard = ({ fortune }) => {
+            if(!fortune) return null;
+            const mission = fortune.luckyMissions[Math.floor(Math.random() * fortune.luckyMissions.length)];
+            return (
+                <div id="fortune-result" className="card-wrapper">
+                    <div className="fortune-card">
+                        <div className="card-emoji">{fortune.emoji}</div>
+                        <h2 className="card-name">{fortune.name}의 오늘의 운세</h2>
+                        <p className="main-fortune">{fortune.fortune}</p>
+                        <div className="mission-box">
+                            <div className="mission-title"><Sparkles size={18} /> 오늘의 행운 미션</div>
+                            <p className="mission-text">{mission}</p>
+                        </div>
+                        <div className="advice-box"><Quote size={20} /><p>{fortune.advice}</p></div>
+                        <div className="lucky-elements">
+                            <div className="lucky-item"><Palette size={20} /><span className="lucky-label">색상</span><span className="lucky-value">{fortune.luckyColor}</span></div>
+                            <div className="lucky-item"><Hash size={20} /><span className="lucky-label">숫자</span><span className="lucky-value">{fortune.luckyNumber}</span></div>
+                            <div className="lucky-item"><Compass size={20} /><span className="lucky-label">방위</span><span className="lucky-value">{fortune.luckyDirection}</span></div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const FortuneCookie = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            const message = useMemo(() => fortuneCookieMessages[Math.floor(Math.random() * fortuneCookieMessages.length)], [isOpen]);
+            return (
+                <div style={{ padding: '3rem 1rem', textAlign: 'center' }}>
+                    <h2 style={{ color: '#d4af37', fontSize: '2rem' }}>포춘 쿠키</h2>
+                    <div onClick={() => setIsOpen(true)} style={{ fontSize: '8rem', cursor: 'pointer', margin: '2rem 0' }}>
+                        {!isOpen ? '🥠' : <div style={{ background: '#fff', padding: '1rem', borderRadius: '8px', fontSize: '1.2rem', color: '#000' }}>{message}</div>}
+                    </div>
+                    {isOpen && <button onClick={() => setIsOpen(false)} className="refresh-btn">다시 하기</button>}
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [page, setPage] = useState('fortune');
+            const [selected, setSelected] = useState(null);
+            const calculateZodiac = (y) => {
+                const map = { 0:'monkey', 1:'rooster', 2:'dog', 3:'pig', 4:'rat', 5:'ox', 6:'tiger', 7:'rabbit', 8:'dragon', 9:'snake', 10:'horse', 11:'sheep' };
+                return map[y % 12];
+            };
+            return (
+                <>
+                    <nav className="nav-bar">
+                        <div className={`nav-item ${page === 'fortune' ? 'active' : ''}`} onClick={() => setPage('fortune')}>운수대통</div>
+                        <div className={`nav-item ${page === 'cookie' ? 'active' : ''}`} onClick={() => setPage('cookie')}>포춘쿠키</div>
+                    </nav>
+                    <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        {page === 'fortune' ? (
+                            <>
+                                <Header />
+                                <BirthInput onCalculate={y => setSelected(zodiacData.find(d => d.id === calculateZodiac(y)))} />
+                                <ZodiacGrid onSelect={id => setSelected(zodiacData.find(d => d.id === id))} selectedId={selected?.id} />
+                                <FortuneCard fortune={selected} />
+                            </>
+                        ) : <FortuneCookie />}
+                    </main>
+                    <footer style={{ padding: '2rem', color: '#666', textAlign: 'center' }}>© 2026 운수대통</footer>
+                </>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
 </html>
