@@ -59,9 +59,45 @@
 .mainFortune {
   font-size: 1.2rem;
   line-height: 1.8;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   padding: 0 1rem;
   font-weight: 500;
+}
+
+.missionBox {
+  background: #fff;
+  border: 1px dashed var(--color-gold);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  position: relative;
+}
+
+.missionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--color-crimson);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.missionIcon {
+  color: var(--color-gold-dark);
+}
+
+.missionText {
+  font-size: 1.1rem;
+  color: var(--color-ink-black);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.missionNote {
+  font-size: 0.8rem;
+  color: #888;
 }
 
 .advice {

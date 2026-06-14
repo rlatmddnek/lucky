@@ -1,6 +1,7 @@
+import { useMemo } from 'react';
 import type { FortuneData } from '../data/fortunes';
 import styles from './FortuneCard.module.css';
-import { Palette, Hash, Compass, Quote } from 'lucide-react';
+import { Palette, Hash, Compass, Quote, CheckCircle2 } from 'lucide-react';
 import LottoGenerator from './LottoGenerator';
 
 interface FortuneCardProps {
@@ -8,6 +9,12 @@ interface FortuneCardProps {
 }
 
 const FortuneCard = ({ fortune }: FortuneCardProps) => {
+  const mission = useMemo(() => {
+    if (!fortune) return null;
+    const randomIndex = Math.floor(Math.random() * fortune.luckyMissions.length);
+    return fortune.luckyMissions[randomIndex];
+  }, [fortune]);
+
   if (!fortune) return null;
 
   return (
@@ -22,6 +29,15 @@ const FortuneCard = ({ fortune }: FortuneCardProps) => {
 
         <div className={styles.mainFortune}>
           <p>{fortune.fortune}</p>
+        </div>
+
+        <div className={styles.missionBox}>
+          <div className={styles.missionTitle}>
+            <CheckCircle2 size={18} className={styles.missionIcon} />
+            <span>오늘의 행운 미션</span>
+          </div>
+          <p className={styles.missionText}>{mission}</p>
+          <p className={styles.missionNote}>* 미션을 완료하면 행운이 더 커집니다!</p>
         </div>
 
         <div className={styles.advice}>

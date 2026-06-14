@@ -3,10 +3,14 @@ import Header from './components/Header';
 import ZodiacGrid from './components/ZodiacGrid';
 import FortuneCard from './components/FortuneCard';
 import BirthInput from './components/BirthInput';
+import FortuneCookie from './components/FortuneCookie';
 import { zodiacData, type FortuneData } from './data/fortunes';
 import './styles/global.css';
 
+type Page = 'zodiac' | 'cookie';
+
 function App() {
+  const [currentPage, setCurrentPage] = useState<Page>('zodiac');
   const [selectedFortune, setSelectedFortune] = useState<FortuneData | null>(null);
 
   const calculateZodiac = (year: number) => {
@@ -48,19 +52,69 @@ function App() {
 
   return (
     <>
-      <Header />
-      <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '5rem' }}>
-        <BirthInput onCalculate={handleBirthSubmit} />
-        
-        <div style={{ margin: '2rem 0', color: 'var(--color-gold)', opacity: 0.5 }}>
-          <span>또는 띠를 직접 선택하세요</span>
+      <nav style={{
+        position: 'sticky',
+        top: 0,
+        width: '100%',
+        background: 'rgba(26, 26, 26, 0.95)',
+        backdropFilter: 'blur(10px)',
+        display: 'flex',
+        justify-content: center,
+        gap: '2rem',
+        padding: '1rem',
+        borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+        zIndex: 1000
+      }}>
+        <div 
+          onClick={() => setCurrentPage('zodiac')}
+          style={{
+            color: currentPage === 'zodiac' ? 'var(--color-gold)' : '#aaa',
+            background: currentPage === 'zodiac' ? 'rgba(212, 175, 55, 0.1)' : 'transparent',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            cursor: 'pointer',
+            fontWeight: 500,
+            transition: 'all 0.3s'
+          }}
+        >
+          운수대통
         </div>
+        <div 
+          onClick={() => setCurrentPage('cookie')}
+          style={{
+            color: currentPage === 'cookie' ? 'var(--color-gold)' : '#aaa',
+            background: currentPage === 'cookie' ? 'rgba(212, 175, 55, 0.1)' : 'transparent',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            cursor: 'pointer',
+            fontWeight: 500,
+            transition: 'all 0.3s'
+          }}
+        >
+          포춘쿠키
+        </div>
+      </nav>
 
-        <ZodiacGrid onSelect={handleSelectZodiac} selectedId={selectedFortune?.id || null} />
-        
-        <div id="fortune-result" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <FortuneCard fortune={selectedFortune} />
-        </div>
+      {currentPage === 'zodiac' && <Header />}
+
+      <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '5rem' }}>
+        {currentPage === 'zodiac' ? (
+          <>
+            <BirthInput onCalculate={handleBirthSubmit} />
+            
+            <div style={{ margin: '2rem 0', color: 'var(--color-gold)', opacity: 0.5 }}>
+              <span>또는 띠를 직접 선택하세요</span>
+            </div>
+
+            <ZodiacGrid onSelect={handleSelectZodiac} selectedId={selectedFortune?.id || null} />
+            
+            <div id="fortune-result" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <FortuneCard fortune={selectedFortune} />
+            </div>
+          </>
+        ) : (
+          <FortuneCookie />
+        )}
       </main>
       <footer style={{ padding: '4rem 1rem 2rem', color: '#666', fontSize: '0.9rem', textAlign: 'center', background: 'rgba(0,0,0,0.3)' }}>
         <p>© 2026 운수대통. 모든 권리는 보호받습니다.</p>

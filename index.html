@@ -607,12 +607,36 @@
             Flame = () => null
             } = LucideIcons;
         // --- Data ---
+        const fortuneCookieMessages = [
+            "오늘 당신에게 행운이 찾아올 거예요.",
+            "작은 기쁨이 큰 행복으로 이어집니다.",
+            "당신의 노력이 곧 결실을 맺을 것입니다.",
+            "새로운 인연이 기다리고 있습니다.",
+            "자신을 믿으세요. 당신은 충분히 잘하고 있습니다.",
+            "뜻밖의 소식이 기쁨을 가져다줄 것입니다.",
+            "포기하지 마세요. 성공이 코앞에 있습니다.",
+            "오늘은 웃음이 끊이지 않는 하루가 될 거예요.",
+            "가장 밝은 별은 당신 안에 있습니다.",
+            "모든 일이 순조롭게 풀릴 것입니다.",
+            "지금 하는 고민은 곧 해결될 문제입니다.",
+            "소중한 사람에게 연락 한 통 해보세요.",
+            "당신의 미소가 주변을 밝게 만듭니다.",
+            "오늘은 평소보다 조금 더 과감해져도 좋습니다.",
+            "하늘을 한 번 올려다보세요. 마음이 편안해질 거예요.",
+            "작은 선행이 큰 복이 되어 돌아옵니다.",
+            "오늘은 당신이 주인공인 날입니다.",
+            "천천히 가도 괜찮습니다. 방향이 중요하니까요.",
+            "원하는 것을 향해 한 걸음 더 나아가세요.",
+            "당신은 생각보다 훨씬 더 강한 사람입니다."
+        ];
+
         const zodiacData = [
             { 
                 id: 'rat', name: '쥐띠', hanja: '子', emoji: '🐭', zodiac: '자', 
                 fortune: '오늘은 작은 일에도 기쁨을 느끼게 될 것입니다. 주변 사람들과의 화합이 좋습니다.', 
                 advice: '성급한 판단보다는 한 발 물러서서 관찰하는 지혜가 필요합니다.', 
                 luckyColor: '하얀색', luckyNumber: 1, luckyDirection: '북쪽',
+                luckyMissions: ["파란색 필기구 사용하기", "주변 사람에게 먼저 인사하기", "오늘의 점심 메뉴 양보하기"],
                 yearFortunes: [
                     { year: '96년생', text: '새로운 시작이 길한 날입니다. 망설이지 마세요.' },
                     { year: '84년생', text: '금전운이 상승합니다. 작은 투자도 좋습니다.' },
@@ -625,6 +649,7 @@
                 fortune: '꾸준한 노력이 결실을 맺는 하루입니다. 정직하게 행동하면 큰 보답이 있을 것입니다.', 
                 advice: '주위의 조언을 귀담아들으면 뜻밖의 기회를 잡을 수 있습니다.', 
                 luckyColor: '노란색', luckyNumber: 5, luckyDirection: '북동쪽',
+                luckyMissions: ["거울 보며 5초간 웃기", "책 한 페이지 끝까지 읽기", "따뜻한 물 한 잔 마시기"],
                 yearFortunes: [
                     { year: '97년생', text: '학업이나 업무에서 창의적인 아이디어가 빛납니다.' },
                     { year: '85년생', text: '대인관계에서 양보하는 미덕이 큰 복으로 옵니다.' },
@@ -637,6 +662,7 @@
                 fortune: '활기가 넘치는 하루입니다. 새로운 도전을 하기에 아주 좋은 시기입니다.', 
                 advice: '자신감을 가지되 독단적인 행동은 삼가야 합니다.', 
                 luckyColor: '초록색', luckyNumber: 3, luckyDirection: '동쪽',
+                luckyMissions: ["기지개 크게 켜기", "새로운 노래 한 곡 듣기", "자신 있는 일 한 가지 완수하기"],
                 yearFortunes: [
                     { year: '98년생', text: '열정이 넘치는 날입니다. 목표를 향해 전진하세요.' },
                     { year: '86년생', text: '리더십을 발휘하여 주도적으로 일을 추진하세요.' },
@@ -649,6 +675,7 @@
                 fortune: '평화롭고 안정적인 하루가 예상됩니다. 예술적인 감각이 빛을 발할 것입니다.', 
                 advice: '섬세한 감수성을 발휘하여 주변을 따뜻하게 보살펴보세요.', 
                 luckyColor: '연두색', luckyNumber: 4, luckyDirection: '동쪽',
+                luckyMissions: ["식물에게 물 주기", "예쁜 사진 한 장 찍기", "누군가에게 칭찬 한 마디 하기"],
                 yearFortunes: [
                     { year: '99년생', text: '연애운이 좋은 날입니다. 솔직하게 마음을 전하세요.' },
                     { year: '87년생', text: '예술적인 영감이 떠오르는 날입니다. 기록하세요.' },
@@ -661,6 +688,7 @@
                 fortune: '강한 에너지가 분출되는 날입니다. 리더십을 발휘하여 일을 주도해 보세요.', 
                 advice: '너무 과한 욕심은 화를 부를 수 있으니 적절한 조절이 필요합니다.', 
                 luckyColor: '청색', luckyNumber: 5, luckyDirection: '동남쪽',
+                luckyMissions: ["계단으로 1층 올라가기", "오늘의 할 일 목록 작성하기", "스스로에게 선물 주기"],
                 yearFortunes: [
                     { year: '00년생', text: '도전 정신이 빛을 발하는 날입니다. 기회를 잡으세요.' },
                     { year: '88년생', text: '계획했던 일이 성과를 내기 시작합니다.' },
@@ -673,6 +701,7 @@
                 fortune: '직관력이 예리해지는 날입니다. 중요한 결정을 내리기에 적합한 시기입니다.', 
                 advice: '냉철한 분석을 통해 실수를 줄이는 것이 관건입니다.', 
                 luckyColor: '보라색', luckyNumber: 2, luckyDirection: '남동쪽',
+                luckyMissions: ["주머니 속 동전 확인하기", "심호흡 3번 하기", "필요 없는 물건 정리하기"],
                 yearFortunes: [
                     { year: '01년생', text: '지혜로운 판단이 필요한 날입니다. 서두르지 마세요.' },
                     { year: '89년생', text: '뜻밖의 인연을 만나 도움을 받게 됩니다.' },
@@ -685,6 +714,7 @@
                 fortune: '시원하게 뻗어 나가는 운세입니다. 여행이나 이동수가 있어 활동량이 많아집니다.', 
                 advice: '열정을 불태우되 체력 안배에도 신경을 써야 합니다.', 
                 luckyColor: '빨간색', luckyNumber: 7, luckyDirection: '남쪽',
+                luckyMissions: ["창문 열고 환기하기", "가벼운 산책 10분 하기", "오늘 입은 옷 정리하기"],
                 yearFortunes: [
                     { year: '02년생', text: '활동 범위가 넓어지는 날입니다. 적극적으로 움직이세요.' },
                     { year: '90년생', text: '자신의 능력을 마음껏 펼쳐보세요. 인정받습니다.' },
@@ -697,6 +727,7 @@
                 fortune: '온화하고 부드러운 기운이 감도는 날입니다. 대인관계에서 이득이 생깁니다.', 
                 advice: '양보하는 미덕을 발휘하면 더 큰 결과로 돌아올 것입니다.', 
                 luckyColor: '베이지색', luckyNumber: 8, luckyDirection: '남서쪽',
+                luckyMissions: ["부드러운 천 만져보기", "가족에게 안부 묻기", "차 한 잔의 여유 즐기기"],
                 yearFortunes: [
                     { year: '03년생', text: '주변의 인기가 높아지는 날입니다. 매력을 뽐내보세요.' },
                     { year: '91년생', text: '협동하여 일을 추진하면 좋은 결과가 있습니다.' },
@@ -709,6 +740,7 @@
                 fortune: '재치가 번뜩이는 하루입니다. 복잡한 문제도 쉽게 해결할 수 있는 날입니다.', 
                 advice: '지나친 장난은 오해를 부를 수 있으니 진중함도 잊지 마세요.', 
                 luckyColor: '금색', luckyNumber: 9, luckyDirection: '서남쪽',
+                luckyMissions: ["재미있는 농담 하나 하기", "두뇌 게임 한 판 하기", "주변 정리정돈 하기"],
                 yearFortunes: [
                     { year: '04년생', text: '창의성이 폭발하는 날입니다. 아이디어를 현실화하세요.' },
                     { year: '92년생', text: '임기응변이 빛을 발하는 순간이 옵니다.' },
@@ -721,6 +753,7 @@
                 fortune: '계획했던 일들이 착착 진행되는 날입니다. 성실함이 최고의 무기가 됩니다.', 
                 advice: '정확한 시간을 지키고 약속을 이행하는 자세가 중요합니다.', 
                 luckyColor: '은색', luckyNumber: 10, luckyDirection: '서쪽',
+                luckyMissions: ["알람 소리 바꿔보기", "약속 장소에 5분 일찍 도착하기", "오늘 하루 감사한 일 기록하기"],
                 yearFortunes: [
                     { year: '05년생', text: '성실한 태도가 좋은 평가를 이끌어냅니다.' },
                     { year: '93년생', text: '꼼꼼한 성격이 빛을 발합니다. 실수를 줄이세요.' },
@@ -733,6 +766,7 @@
                 fortune: '충실한 노력에 대한 보상이 따르는 날입니다. 신뢰를 얻어 일이 잘 풀립니다.', 
                 advice: '의리를 지키는 모습이 주변 사람들에게 깊은 인상을 줄 것입니다.', 
                 luckyColor: '갈색', luckyNumber: 5, luckyDirection: '서북쪽',
+                luckyMissions: ["반려동물과 시간 보내기 (없다면 영상 보기)", "신발 가지런히 놓기", "친구에게 응원 메시지 보내기"],
                 yearFortunes: [
                     { year: '06년생', text: '믿음직한 모습이 주변에 안도감을 줍니다.' },
                     { year: '94년생', text: '작은 일에도 최선을 다하면 큰 행운이 옵니다.' },
@@ -745,6 +779,7 @@
                 fortune: '재물운이 상승하는 기분 좋은 하루입니다. 풍요로운 마음으로 지낼 수 있습니다.', 
                 advice: '베푸는 기쁨을 느껴보세요. 나중에 더 큰 복으로 돌아올 것입니다.', 
                 luckyColor: '검정색', luckyNumber: 6, luckyDirection: '북서쪽',
+                luckyMissions: ["저금통에 동전 넣기", "맛있는 간식 하나 먹기", "스스로를 칭찬해주기"],
                 yearFortunes: [
                     { year: '07년생', text: '기분 좋은 일이 생기는 활기찬 날입니다.' },
                     { year: '95년생', text: '횡재수가 있을 수 있으니 주변을 잘 살펴보세요.' },
@@ -891,6 +926,12 @@
         };
 
         const FortuneCard = ({ fortune }) => {
+            const mission = useMemo(() => {
+                if (!fortune) return null;
+                const randomIndex = Math.floor(Math.random() * fortune.luckyMissions.length);
+                return fortune.luckyMissions[randomIndex];
+            }, [fortune]);
+
             if(!fortune) return null;
             return (
                 <div id="fortune-result" className="card-wrapper">
@@ -898,6 +939,15 @@
                         <div className="card-emoji">{fortune.emoji}</div>
                         <h2 className="card-name">{fortune.name}의 오늘의 운세</h2>
                         <p className="main-fortune">{fortune.fortune}</p>
+                        
+                        <div style={{ background: '#fff', border: '1px dashed #d4af37', padding: '1.5rem', marginBottom: '2rem', borderRadius: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#8b0000', fontWeight: 700, marginBottom: '0.8rem' }}>
+                                <Sparkles size={18} /> 오늘의 행운 미션
+                            </div>
+                            <p style={{ fontSize: '1.1rem', color: '#1a1a1a', fontWeight: 600, marginBottom: '0.5rem' }}>{mission}</p>
+                            <p style={{ fontSize: '0.8rem', color: '#888' }}>* 미션을 완료하면 행운이 더 커집니다!</p>
+                        </div>
+
                         <div className="advice-box">
                             <Quote size={20} color="#8b0000" />
                             <p>{fortune.advice}</p>
@@ -924,6 +974,77 @@
 
                         <LottoGenerator seedId={fortune.id} />
                     </div>
+                </div>
+            );
+        };
+
+        const FortuneCookie = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            const [isSpinning, setIsSpinning] = useState(false);
+            
+            const message = useMemo(() => {
+                const randomIndex = Math.floor(Math.random() * fortuneCookieMessages.length);
+                return fortuneCookieMessages[randomIndex];
+            }, [isOpen]);
+
+            const handleOpen = () => {
+                if (!isOpen) setIsOpen(true);
+            };
+
+            const handleReset = () => {
+                setIsSpinning(true);
+                setIsOpen(false);
+                setTimeout(() => setIsSpinning(false), 600);
+            };
+
+            return (
+                <div style={{ width: '100%', maxWidth: '600px', padding: '3rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                    <h2 style={{ color: '#d4af37', fontSize: '2rem', marginBottom: '0.5rem' }}>포춘 쿠키를 열어보세요</h2>
+                    <p style={{ color: '#aaa', fontSize: '1rem', marginBottom: '3rem' }}>오늘 당신에게 전하는 짧은 행운의 메시지</p>
+
+                    <div 
+                        onClick={handleOpen}
+                        style={{
+                            cursor: 'pointer',
+                            width: '200px',
+                            height: '200px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '8rem',
+                            userSelect: 'none',
+                            transition: 'transform 0.3s'
+                        }}
+                    >
+                        {!isOpen ? '🥠' : (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px', position: 'relative' }}>
+                                <div style={{ 
+                                    position: 'absolute', background: 'white', padding: '1rem', width: '250px', 
+                                    boxShadow: '0 5px 15px rgba(0,0,0,0.2)', borderRadius: '4px', z-index: 10,
+                                    transform: 'translateY(-100px)', borderLeft: '5px solid #8b0000', fontSize: '1.1rem',
+                                    color: '#1a1a1a', fontWeight: 700
+                                }}>
+                                    {message}
+                                </div>
+                                <div style={{ transform: 'rotate(-60deg) translateX(-30px)', fontSize: '6rem' }}>🥐</div>
+                                <div style={{ transform: 'rotate(60deg) translateX(30px)', fontSize: '6rem' }}>🥐</div>
+                            </div>
+                        )}
+                    </div>
+
+                    {isOpen && (
+                        <button 
+                            onClick={handleReset} 
+                            disabled={isSpinning}
+                            style={{
+                                marginTop: '8rem', background: 'none', border: '1px solid #aa841e', color: '#aa841e',
+                                padding: '0.7rem 1.5rem', borderRadius: '30px', display: 'flex', alignItems: 'center',
+                                gap: '0.5rem', fontWeight: 600, cursor: 'pointer'
+                            }}
+                        >
+                            <RefreshCw size={18} className={isSpinning ? 'spinning' : ''} /> 다시 열어보기
+                        </button>
+                    )}
                 </div>
             );
         };
@@ -1155,7 +1276,7 @@
         };
 
         const App = () => {
-            const [currentPage, setCurrentPage] = useState('fortune'); // 'fortune' or 'mood'
+            const [currentPage, setCurrentPage] = useState('fortune'); // 'fortune', 'mood', or 'cookie'
             const [selectedFortune, setSelectedFortune] = useState(null);
 
             useEffect(() => {
@@ -1185,28 +1306,34 @@
                             className={`nav-item ${currentPage === 'fortune' ? 'active' : ''}`} 
                             onClick={() => setCurrentPage('fortune')}
                         >
-                            오늘의 운세
+                            운수대통
+                        </div>
+                        <div 
+                            className={`nav-item ${currentPage === 'cookie' ? 'active' : ''}`} 
+                            onClick={() => setCurrentPage('cookie')}
+                        >
+                            포춘쿠키
                         </div>
                         <div 
                             className={`nav-item ${currentPage === 'mood' ? 'active' : ''}`} 
                             onClick={() => setCurrentPage('mood')}
                         >
-                            오늘 기분에는 이거지
+                            오늘의 기분
                         </div>
                     </nav>
 
                     {currentPage === 'fortune' && <Header />}
 
                     <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '5rem' }}>
-                        {currentPage === 'fortune' ? (
+                        {currentPage === 'fortune' && (
                             <>
                                 <BirthInput onCalculate={handleBirth} />
                                 <ZodiacGrid onSelect={id => setSelectedFortune(zodiacData.find(d => d.id === id))} selectedId={selectedFortune?.id} />
                                 <FortuneCard fortune={selectedFortune} />
                             </>
-                        ) : (
-                            <MoodTracker />
                         )}
+                        {currentPage === 'cookie' && <FortuneCookie />}
+                        {currentPage === 'mood' && <MoodTracker />}
                     </main>
 
                     <footer style={{ padding: '4rem 1rem 2rem', color: '#666', fontSize: '0.9rem', textAlign: 'center', background: 'rgba(0,0,0,0.3)', width: '100%' }}>
