@@ -59,7 +59,7 @@ function App() {
         background: 'rgba(26, 26, 26, 0.95)',
         backdropFilter: 'blur(10px)',
         display: 'flex',
-        justify-content: center,
+        justifyContent: 'center',
         gap: '2rem',
         padding: '1rem',
         borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
